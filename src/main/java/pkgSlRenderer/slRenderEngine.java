@@ -4,6 +4,11 @@ import pkgSlUtils.slWindowManager;
 
 import java.util.Random;
 
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11C.glClear;
+
 public class slRenderEngine {
 
     private final int NUM_RGBA = 4;
@@ -20,7 +25,15 @@ public class slRenderEngine {
     Random rand = new Random();
 
     public void initOpenGL(slWindowManager wm) {
+        my_wm = wm;
+        my_wm.updateContextToThis();
 
+        while (!my_wm.isGlfwWindowClosed()) {
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            my_wm.swapBuffers();
+        }
     }
 
     private void generateCircleSegmentVertices(float[] vertices, float radius, float[] center, float na, float na2, int segments) {

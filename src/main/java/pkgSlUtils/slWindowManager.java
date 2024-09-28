@@ -1,15 +1,15 @@
 package pkgSlUtils;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11C.glClearColor;
 
 public class slWindowManager {
 
-    private long glfw_win;
-    private static slWindowManager my_window;
+    private static long win_id = 0;
+    private static slWindowManager my_window = null;
+
+    private slWindowManager() {}
 
     public int getCurrentWindowSize() {
         return 0;
@@ -23,15 +23,18 @@ public class slWindowManager {
     }
 
     public void destroyGlfwWindow() {
-
+        if (win_id != 0) {
+            glfwDestroyWindow(win_id);
+            win_id = 0;
+        }
     }
 
     public void swapBuffers() {
-        glfwSwapBuffers(glfw_win);
+        glfwSwapBuffers(win_id);
     }
 
     public boolean isGlfwWindowClosed() {
-        return glfwWindowShouldClose(glfw_win);
+        return glfwWindowShouldClose(win_id);
     }
 
     public long initGLFWWindow(int h, int w, String title) {
@@ -46,15 +49,15 @@ public class slWindowManager {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 
-        glfw_win = glfwCreateWindow(w,h,title,0, 0);
+        win_id = glfwCreateWindow(w,h,title,0, 0);
 
-        if (glfw_win == 0) {
+        if (win_id == 0) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        glfwMakeContextCurrent(glfw_win);
+        glfwMakeContextCurrent(win_id);
 
-        return glfw_win;
+        return win_id;
     }
 
     public int[] getWindowSize() {
@@ -62,7 +65,6 @@ public class slWindowManager {
     }
 
     public void updateContextToThis() {
-        glfwMakeContextCurrent(glfw_win);
+        glfwMakeContextCurrent(win_id);
     }
-
 }

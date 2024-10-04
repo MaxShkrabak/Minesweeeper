@@ -11,10 +11,6 @@ public class slWindowManager {
 
     private slWindowManager() {}
 
-    public int getCurrentWindowSize() {
-        return 0;
-    }
-
     public static slWindowManager get() {
         if (my_window == null) {
             my_window = new slWindowManager();
@@ -37,7 +33,7 @@ public class slWindowManager {
         return glfwWindowShouldClose(win_id);
     }
 
-    public long initGLFWWindow(int h, int w, String title) {
+    public long initGLFWWindow(int w, int h, String label) {
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
@@ -49,7 +45,7 @@ public class slWindowManager {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 
-        win_id = glfwCreateWindow(w,h,title,0, 0);
+        win_id = glfwCreateWindow(w,h,label,0, 0);
 
         if (win_id == 0) {
             throw new RuntimeException("Failed to create the GLFW window");
@@ -58,10 +54,6 @@ public class slWindowManager {
         glfwMakeContextCurrent(win_id);
 
         return win_id;
-    }
-
-    public int[] getWindowSize() {
-        return new int[0];
     }
 
     public void updateContextToThis() {

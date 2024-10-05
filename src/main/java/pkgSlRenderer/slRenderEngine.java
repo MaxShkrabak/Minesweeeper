@@ -17,7 +17,7 @@ public class slRenderEngine {
     private final int NUM_3D_COORDS = 3;
     private final int TRIANGLES_PER_CIRCLE = 40;
     private final float C_RADIUS = 0.05f;
-    private final int MAX_CIRCLES = 500;
+    private final int MAX_CIRCLES = 1000;
     private final int UPDATE_INTERVAL = 500;
 
     private float[][] rand_colors;
@@ -50,13 +50,14 @@ public class slRenderEngine {
             float x2 = (float) Math.cos(theta) * radius + center[0];
             float y2 = (float) Math.sin(theta) * radius + center[1];
 
-            // Draws triangle
+            // Initiates triangle
             glVertex3f(center[0], center[1], 0.0f); // Center point
             glVertex3f(x1, y1, 0.0f); // First vertex
             glVertex3f(x2, y2, 0.0f); // Second vertex
         }
     }
 
+    // Function used to generate random colors and coords for circles
     private void updateRandVertices() {
         for (int i = 0; i < MAX_CIRCLES; i++) {
             // Random colors
@@ -65,7 +66,7 @@ public class slRenderEngine {
             rand_colors[i][2] = rand.nextFloat(); // GREEN
             rand_colors[i][3] = 1.0f; // ALPHA
 
-            // Random coords
+            // Random coords for 2D space
             rand_coords[i][0] = rand.nextFloat() * (2.0f - 2 * C_RADIUS) - 1.0f + C_RADIUS; // Random X
             rand_coords[i][1] = rand.nextFloat() * (2.0f - 2 * C_RADIUS) - 1.0f + C_RADIUS; // Random Y
             rand_coords[i][2] = 0.0f; // Z is always 0
@@ -77,7 +78,7 @@ public class slRenderEngine {
 
         final float begin_angle = 0.0f, end_angle = (float) (2.0f * Math.PI) / TRIANGLES_PER_CIRCLE;
 
-        updateRandVertices(); // Initial call
+        updateRandVertices();
 
         while (!my_wm.isGlfwWindowClosed()) {
             double currTime = glfwGetTime();
@@ -93,10 +94,10 @@ public class slRenderEngine {
             glBegin(GL_TRIANGLES);
 
             for (int i = 0; i < MAX_CIRCLES; i++) {
-                // Color for the circle
+                // Random color for the circle(s)
                 glColor4f(rand_colors[i][0], rand_colors[i][1], rand_colors[i][2], rand_colors[i][3]);
 
-                // Generates circle
+                // Generate circle(s)
                 generateCircleSegmentVertices(C_RADIUS, rand_coords[i], begin_angle, end_angle, TRIANGLES_PER_CIRCLE);
             }
             glEnd();

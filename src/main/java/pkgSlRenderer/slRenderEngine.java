@@ -17,7 +17,7 @@ public class slRenderEngine {
     private final int NUM_3D_COORDS = 3;
     private final int TRIANGLES_PER_CIRCLE = 40;
     private final float C_RADIUS = 0.05f;
-    private final int MAX_CIRCLES = 1000;
+    private final int MAX_CIRCLES = 1;
     private final int UPDATE_INTERVAL = 500;
 
     private float[][] rand_colors;
@@ -39,21 +39,15 @@ public class slRenderEngine {
     }
 
     private void generateCircleSegmentVertices(float radius, float[] center, float theta, float delT, int maxTriangles) {
-        for (int num_tri = 0; num_tri < maxTriangles; ++num_tri) {
-            // Calculate first vertex
-            float x1 = (float) Math.cos(theta) * radius + center[0];
-            float y1 = (float) Math.sin(theta) * radius + center[1];
+        glVertex3f(center[0], center[1], 0.0f); // Center point
+        for (int num_tri = 0; num_tri <= maxTriangles; ++num_tri) {
+            // Calculates vertices
+            float x = (float) Math.cos(theta) * radius + center[0];
+            float y = (float) Math.sin(theta) * radius + center[1];
+
+            glVertex3f(x, y, 0.0f);
 
             theta += delT;
-
-            // Calculate second vertex
-            float x2 = (float) Math.cos(theta) * radius + center[0];
-            float y2 = (float) Math.sin(theta) * radius + center[1];
-
-            // Initiates triangle
-            glVertex3f(center[0], center[1], 0.0f); // Center point
-            glVertex3f(x1, y1, 0.0f); // First vertex
-            glVertex3f(x2, y2, 0.0f); // Second vertex
         }
     }
 
@@ -91,7 +85,7 @@ public class slRenderEngine {
                 updateRandVertices();
             }
 
-            glBegin(GL_TRIANGLES);
+            glBegin(GL_TRIANGLE_FAN);
 
             for (int i = 0; i < MAX_CIRCLES; i++) {
                 // Random color for the circle(s)

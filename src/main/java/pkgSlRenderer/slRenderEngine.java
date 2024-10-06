@@ -17,7 +17,7 @@ public class slRenderEngine {
     private final int NUM_3D_COORDS = 3;
     private final int TRIANGLES_PER_CIRCLE = 40;
     private final float C_RADIUS = 0.05f;
-    private final int MAX_CIRCLES = 5000;
+    private final int MAX_CIRCLES = 500;
     private final int UPDATE_INTERVAL = 500;
 
     private float[][] rand_colors;
@@ -39,19 +39,17 @@ public class slRenderEngine {
     }
 
     private void generateCircleSegmentVertices(float radius, float[] center, float theta, float delT, int maxTriangles) {
-        glVertex3f(center[0], center[1], 0.0f); // Center point
         for (int num_tri = 0; num_tri <= maxTriangles; ++num_tri) {
-            // Calculates vertices
+            // Calculate vertices
             float x = (float) Math.cos(theta) * radius + center[0];
             float y = (float) Math.sin(theta) * radius + center[1];
 
             glVertex3f(x, y, 0.0f);
-
             theta += delT;
         }
     }
 
-    // Function used to generate random colors and coords for circles
+    // Method used to generate random colors and coords for circles
     private void updateRandVertices() {
         for (int i = 0; i < MAX_CIRCLES; i++) {
             // Random colors
@@ -67,6 +65,7 @@ public class slRenderEngine {
         }
     }
 
+    // Method to Render Circle(s)
     public void render() {
         double lastUpdate = glfwGetTime();
 
@@ -94,7 +93,6 @@ public class slRenderEngine {
                 generateCircleSegmentVertices(C_RADIUS, rand_coords[i], begin_angle, end_angle, TRIANGLES_PER_CIRCLE);
                 glEnd();
             }
-
             my_wm.swapBuffers();
         }
         my_wm.destroyGlfwWindow();

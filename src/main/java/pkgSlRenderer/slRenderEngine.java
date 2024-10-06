@@ -17,7 +17,7 @@ public class slRenderEngine {
     private final int NUM_3D_COORDS = 3;
     private final int TRIANGLES_PER_CIRCLE = 40;
     private final float C_RADIUS = 0.05f;
-    private final int MAX_CIRCLES = 1;
+    private final int MAX_CIRCLES = 5000;
     private final int UPDATE_INTERVAL = 500;
 
     private float[][] rand_colors;
@@ -85,16 +85,16 @@ public class slRenderEngine {
                 updateRandVertices();
             }
 
-            glBegin(GL_TRIANGLE_FAN);
-
             for (int i = 0; i < MAX_CIRCLES; i++) {
                 // Random color for the circle(s)
                 glColor4f(rand_colors[i][0], rand_colors[i][1], rand_colors[i][2], rand_colors[i][3]);
 
                 // Generate circle(s)
+                glBegin(GL_TRIANGLE_FAN);
                 generateCircleSegmentVertices(C_RADIUS, rand_coords[i], begin_angle, end_angle, TRIANGLES_PER_CIRCLE);
+                glEnd();
             }
-            glEnd();
+
             my_wm.swapBuffers();
         }
         my_wm.destroyGlfwWindow();

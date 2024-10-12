@@ -1,7 +1,7 @@
 package pkgSlRenderer;
 
 import org.lwjgl.opengl.GL;
-import pkgSlUtils.slWindowManager;
+import pkgSlUtils.SLWindowManager;
 
 import java.util.Random;
 
@@ -12,26 +12,26 @@ import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11C.glClear;
 import static org.lwjgl.opengl.GL11C.glClearColor;
 
-public class slRenderEngine {
+public abstract class SLRenderEngine {
     private final int NUM_RGBA = 4;
     private final int NUM_3D_COORDS = 3;
-    private final int TRIANGLES_PER_CIRCLE = 40;
+    private final int TRIANGLES_PER_CIRCLE = 7;
     private final float C_RADIUS = 0.05f;
-    private final int MAX_CIRCLES = 500;
+    private final int MAX_CIRCLES = 1;
     private final int UPDATE_INTERVAL = 500;
 
     private float[][] rand_colors;
     private float[][] rand_coords;
 
-    private slWindowManager my_wm;
+    private SLWindowManager my_wm;
     Random rand = new Random();
 
-    public void initOpenGL(slWindowManager wm) {
+    public void initOpenGL(SLWindowManager wm) {
         my_wm = wm;
         my_wm.updateContextToThis();
 
         GL.createCapabilities();
-        float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 1.0f, CC_ALPHA = 1.0f;
+        float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 0.0f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
         rand_colors = new float[MAX_CIRCLES][NUM_RGBA];
@@ -66,7 +66,7 @@ public class slRenderEngine {
     }
 
     // Method to Render Circle(s)
-    public void render() {
+    public void render(int frameDelay, int rows, int cols) {
         double lastUpdate = glfwGetTime();
 
         final float begin_angle = 0.0f, end_angle = (float) (2.0f * Math.PI) / TRIANGLES_PER_CIRCLE;

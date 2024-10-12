@@ -4,16 +4,17 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class slWindowManager {
+public class SLWindowManager {
 
     private static long win_id = 0;
-    private static slWindowManager my_window = null;
+    private static SLWindowManager my_window = null;
 
-    private slWindowManager() {}
+    private SLWindowManager() {}
 
-    public static slWindowManager get() {
+    public static SLWindowManager get() {
+
         if (my_window == null) {
-            my_window = new slWindowManager();
+            my_window = new SLWindowManager();
         }
         return my_window;
     }

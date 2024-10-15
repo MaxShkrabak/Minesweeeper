@@ -12,7 +12,6 @@ public class SLWindowManager {
     private SLWindowManager() {}
 
     public static SLWindowManager get() {
-
         if (my_window == null) {
             my_window = new SLWindowManager();
         }

@@ -3,11 +3,7 @@ package pkgSlRenderer;
 import org.lwjgl.opengl.GL;
 import pkgSlUtils.SLWindowManager;
 
-import java.util.Random;
-
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11C.glClear;
 import static org.lwjgl.opengl.GL11C.glClearColor;

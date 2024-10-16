@@ -6,10 +6,10 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.*;
 
 public class SLPolygonRenderer extends SLRenderEngine {
-    private static final float DEFAULT_POLYGON_RADIUS = 0.10f;
+    private static final float DEFAULT_POLYGON_RADIUS = 1.0f;
     private static final int MAX_POLYGON_SIDES = 20;
     private static final int DEFAULT_POLYGON_SIDES = 3;
-    private static final int DEF_TIME_DELAY = 1000;      // Not sure if needed yet
+    private static final double DEF_TIME_DELAY = 700;      // Not sure if needed yet
 
     Random rand = new Random();
     private float polygonRadius;
@@ -37,18 +37,25 @@ public class SLPolygonRenderer extends SLRenderEngine {
         float[] center = {0.0f, 0.0f}; // For now center of screen
 
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // This is needed to ensure first shape (triangle) is random color
+        if (lastTime == 0) {
+            lastTime = currTime;
+            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f);
+        }
         // Increase sides after each render
         if (currTime - lastTime > (DEF_TIME_DELAY / 1000)) {
             lastTime = currTime;
             setMaxSides(++currNumSides);
 
+            System.out.println(currNumSides); // Testing purposes
+
             // If currSides is more than maxSides, reset back to 3
             if (currNumSides > MAX_POLYGON_SIDES) {
                 currNumSides = DEFAULT_POLYGON_SIDES;
             }
+            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random colors
         }
-
-        glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random colors
 
         glBegin(GL_TRIANGLE_FAN);
         generatePolygonVertices(polygonRadius, center, begin_angle, end_angle, currNumSides);

@@ -3,7 +3,10 @@ package pkgSlRenderer;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11C.glClear;
 
 public class SLPolygonRenderer extends SLRenderEngine {
     private static final float DEFAULT_POLYGON_RADIUS = 1.0f;
@@ -31,7 +34,28 @@ public class SLPolygonRenderer extends SLRenderEngine {
     }
 
     @Override
-    protected void renderPolygons(int frameDelay, int rows, int cols) {
+    public void render(int frameDelay, int cols, int rows) {
+        while (!my_wm.isGlfwWindowClosed()) {
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            renderPolygons(frameDelay);
+            my_wm.swapBuffers();
+        }
+        my_wm.destroyGlfwWindow();
+    }
+
+    // Renders as many rows and cols as radius allows to fit in window
+    @Override
+    public void render(float polygonRadius) {}
+
+    // Default Render Method
+    @Override
+    public void render(){
+        render(500, 30, 30);
+    }
+
+    private void renderPolygons(int frameDelay) {
         double currTime = glfwGetTime();
         final float begin_angle = 0.0f, end_angle = (float) (2.0f * Math.PI) / currNumSides;
         float[] center = {0.0f, 0.0f}; // For now center of screen
@@ -41,12 +65,14 @@ public class SLPolygonRenderer extends SLRenderEngine {
         // This is needed to ensure first shape (triangle) is random color
         if (lastTime == 0) {
             lastTime = currTime;
-            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f);
+            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random color for first shape
         }
         // Increase sides after each render
-        if (currTime - lastTime > (DEF_TIME_DELAY / 1000)) {
+        if (currTime - lastTime > ((double)frameDelay / 1000)) {
             lastTime = currTime;
             setMaxSides(++currNumSides);
+
+            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random polygon color
 
             System.out.println(currNumSides); // Testing purposes
 
@@ -54,7 +80,6 @@ public class SLPolygonRenderer extends SLRenderEngine {
             if (currNumSides > MAX_POLYGON_SIDES) {
                 currNumSides = DEFAULT_POLYGON_SIDES;
             }
-            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random colors
         }
 
         glBegin(GL_TRIANGLE_FAN);

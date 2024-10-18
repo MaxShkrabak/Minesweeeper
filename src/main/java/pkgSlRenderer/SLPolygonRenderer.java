@@ -38,6 +38,11 @@ public class SLPolygonRenderer extends SLRenderEngine {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
 
+            // If currSides is more than maxSides, reset back to 3
+            if (currNumSides > MAX_POLYGON_SIDES) {
+                currNumSides = DEFAULT_POLYGON_SIDES;
+            }
+
             renderPolygons(cols, rows);
             my_wm.swapBuffers();
             if (frameDelay != 0) {
@@ -72,11 +77,6 @@ public class SLPolygonRenderer extends SLRenderEngine {
         glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random polygon color
 
         System.out.println(currNumSides); // Testing purposes
-
-        // If currSides is more than maxSides, reset back to 3
-        if (currNumSides > MAX_POLYGON_SIDES) {
-            currNumSides = DEFAULT_POLYGON_SIDES;
-        }
 
         float c_w = (float) width / cols; // Width for each column
         float h_r = (float) height / rows; // Height for each row

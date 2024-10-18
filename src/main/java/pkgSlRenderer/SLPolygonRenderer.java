@@ -87,16 +87,17 @@ public class SLPolygonRenderer extends SLRenderEngine {
 
         System.out.println(currNumSides); // Testing purposes
 
-        float c_w = (float) width / cols; // Width for each column
+        float w_c = (float) width / cols; // Width for each column
         float h_r = (float) height / rows; // Height for each row
 
-        setRadius(Math.min(c_w, h_r) * 0.5f); // New scaled radius
+        float maxDimension = Math.max(cols, rows); // Finds larger of two arguments
+        setRadius(Math.min(width, height) / (maxDimension * 2)); // New scaled radius
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 // Center position for each polygon
                 float[] center = {
-                        (col + DEFAULT_POLYGON_RADIUS) * c_w,  // Center x-coord
+                        (col + DEFAULT_POLYGON_RADIUS) * w_c,  // Center x-coord
                         (row + DEFAULT_POLYGON_RADIUS) * h_r   // Center y-coord
                 };
 

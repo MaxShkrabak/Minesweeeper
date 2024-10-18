@@ -2,22 +2,21 @@ package pkgSlRenderer;
 
 import java.util.Random;
 
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11C.glClear;
 
 public class SLPolygonRenderer extends SLRenderEngine {
-    private static final float DEFAULT_POLYGON_RADIUS = 1.0f;
+    private static final float DEFAULT_POLYGON_RADIUS = 0.5f;
     private static final int MAX_POLYGON_SIDES = 20;
     private static final int DEFAULT_POLYGON_SIDES = 3;
-    private static final double DEF_TIME_DELAY = 700;      // Not sure if needed yet
+    private static final int DEF_TIME_DELAY = 500;
+    private static final int DEF_ROWS = 30, DEF_COLS = 30;
 
     Random rand = new Random();
     private float polygonRadius;
     private int currNumSides;
-    private double lastTime = 0;
 
     // Constructor
     public SLPolygonRenderer() {
@@ -39,8 +38,15 @@ public class SLPolygonRenderer extends SLRenderEngine {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
 
-            renderPolygons(frameDelay);
+            renderPolygons(cols, rows);
             my_wm.swapBuffers();
+            if (frameDelay != 0) {
+                try{
+                    Thread.sleep(frameDelay);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
         my_wm.destroyGlfwWindow();
     }
@@ -52,39 +58,44 @@ public class SLPolygonRenderer extends SLRenderEngine {
     // Default Render Method
     @Override
     public void render(){
-        render(500, 30, 30);
+        render(DEF_TIME_DELAY, DEF_COLS, DEF_ROWS);
     }
 
-    private void renderPolygons(int frameDelay) {
-        double currTime = glfwGetTime();
+    private void renderPolygons(int rows, int cols) {
         final float begin_angle = 0.0f, end_angle = (float) (2.0f * Math.PI) / currNumSides;
-        float[] center = {0.0f, 0.0f}; // For now center of screen
+        int[] windowSize = my_wm.getWindowSize();
+        int width = windowSize[0], height = windowSize[1];
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // This is needed to ensure first shape (triangle) is random color
-        if (lastTime == 0) {
-            lastTime = currTime;
-            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random color for first shape
+        setMaxSides(++currNumSides); // Increment number of sides
+        glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random polygon color
+
+        System.out.println(currNumSides); // Testing purposes
+
+        // If currSides is more than maxSides, reset back to 3
+        if (currNumSides > MAX_POLYGON_SIDES) {
+            currNumSides = DEFAULT_POLYGON_SIDES;
         }
-        // Increase sides after each render
-        if (currTime - lastTime > ((double)frameDelay / 1000)) {
-            lastTime = currTime;
-            setMaxSides(++currNumSides);
 
-            glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random polygon color
+        float c_w = (float) width / cols; // Width for each column
+        float h_r = (float) height / rows; // Height for each row
 
-            System.out.println(currNumSides); // Testing purposes
+        setRadius(Math.min(c_w, h_r) * 0.5f); // New scaled radius
 
-            // If currSides is more than maxSides, reset back to 3
-            if (currNumSides > MAX_POLYGON_SIDES) {
-                currNumSides = DEFAULT_POLYGON_SIDES;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                // Center position for each polygon
+                float[] center = {
+                        (col + DEFAULT_POLYGON_RADIUS) * c_w,  // Center x-coord
+                        (row + DEFAULT_POLYGON_RADIUS) * h_r   // Center y-coord
+                };
+
+                glBegin(GL_TRIANGLE_FAN);
+                generatePolygonVertices(polygonRadius, center, begin_angle, end_angle, currNumSides, width, height);
+                glEnd();
             }
         }
-
-        glBegin(GL_TRIANGLE_FAN);
-        generatePolygonVertices(polygonRadius, center, begin_angle, end_angle, currNumSides);
-        glEnd();
     }
 
     /*
@@ -122,12 +133,12 @@ public class SLPolygonRenderer extends SLRenderEngine {
     }
      */
 
-    private void generatePolygonVertices(float radius, float[] center, float theta, float delT, int sides) {
+    private void generatePolygonVertices(float radius, float[] center, float theta, float delT, int sides, int width, int height) {
         for (int i = 0; i < sides; i++) {
             float x = (float) Math.cos(theta) * radius + center[0];
             float y = (float) Math.sin(theta) * radius + center[1];
 
-            glVertex3f(x, y, 0.0f);
+            glVertex3f(x / ((float) width / 2) - 1, y / ((float) height / 2) -1, 0.0f);
             theta += delT;
         }
     }
@@ -144,7 +155,5 @@ public class SLPolygonRenderer extends SLRenderEngine {
         }
     }
      */
-
-
 
 }

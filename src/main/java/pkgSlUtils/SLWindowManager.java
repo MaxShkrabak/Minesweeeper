@@ -59,4 +59,13 @@ public class SLWindowManager {
     public void updateContextToThis() {
         glfwMakeContextCurrent(win_id);
     }
+
+    public int[] getWindowSize() {
+        int[] width = new int[1];
+        int[] height = new int[1];
+
+        glfwGetWindowSize(win_id, width, height);
+
+        return new int[]{width[0], height[0]};
+    }
 }

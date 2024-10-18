@@ -58,7 +58,16 @@ public class SLPolygonRenderer extends SLRenderEngine {
 
     // Renders as many rows and cols as radius allows to fit in window
     @Override
-    public void render(float polygonRadius) {}
+    public void render(float polygonRadius) {
+        int[] windowSize = my_wm.getWindowSize();
+        int width = windowSize[0];
+        int height = windowSize[1];
+
+        int cols = (int) (width / (polygonRadius * 2));
+        int rows = (int) (height / (polygonRadius * 2));
+
+        render(DEF_TIME_DELAY, cols, rows);
+    }
 
     // Default Render Method
     @Override

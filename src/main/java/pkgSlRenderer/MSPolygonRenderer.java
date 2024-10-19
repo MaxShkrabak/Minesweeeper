@@ -12,7 +12,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
     // Constructor
     public MSPolygonRenderer() {
-        this.polygonRadius = DEFAULT_POLYGON_RADIUS;    // Starts with 0.05f radius
+        this.polygonRadius = DEFAULT_POLYGON_RADIUS;    // Starts with 0.5f radius
         this.currNumSides = DEFAULT_POLYGON_SIDES;      // Starts with 3 sides
     }
 
@@ -106,13 +106,15 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
         randomColor(); // Each frame will have newly colorized polygons
 
-        System.out.println(currNumSides); // Testing purposes
+        //System.out.println(currNumSides); // Testing purposes
 
         float w_c = (float) width / cols; // Width for each column
         float h_r = (float) height / rows; // Height for each row
 
         float maxDimension = Math.max(cols, rows); // Finds larger of two arguments
         setRadius(Math.min(width, height) / (maxDimension * 2)); // New scaled radius
+
+        //System.out.println(polygonRadius); // Testing purposes
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {

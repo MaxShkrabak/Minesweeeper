@@ -1,8 +1,5 @@
 package pkgSlRenderer;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
@@ -17,6 +14,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
     private float polygonRadius;
     private int currNumSides;
+    private int numbPolygons;
 
     // Constructor
     public MSPolygonRenderer() {
@@ -30,6 +28,10 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
     public void setMaxSides(int sides) {
         this.currNumSides = sides;
+    }
+
+    public void setNumPolygons(int numPolygons) {
+        this.numbPolygons = numPolygons;
     }
 
     @Override
@@ -76,6 +78,45 @@ public class MSPolygonRenderer extends MSRenderEngine {
         render(DEF_TIME_DELAY, DEF_COLS, DEF_ROWS);
     }
 
+    // Render randomly placed polygons
+    @Override
+    public void render(float radius, int sides, int numPolygons) {
+        setRadius(radius);
+        setMaxSides(sides);
+        setNumPolygons(numPolygons);
+
+        while (!my_wm.isGlfwWindowClosed()) {
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            for (int i = 0; i < numbPolygons; i++) {
+                // Random shapes 3-sides
+                int randomSides = rand.nextInt(currNumSides - 2) + 3;
+
+                float[] center = {
+                        rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random X
+                        rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random Y
+                };
+
+                randomColor();
+                glBegin(GL_TRIANGLE_FAN);
+                super.generatePolygon(randomSides, polygonRadius, center);
+                glEnd();
+            }
+
+            my_wm.swapBuffers();
+            if (DEF_TIME_DELAY > 0) {
+                try{
+                    Thread.sleep(DEF_TIME_DELAY);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        my_wm.destroyGlfwWindow();
+    }
+
+    // Method used to render 'grid' of polygons based on rows and cols
     private void renderPolygons(int rows, int cols) {
         int[] windowSize = my_wm.getWindowSize();
         int width = windowSize[0], height = windowSize[1];
@@ -108,6 +149,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
         setMaxSides(++currNumSides); // Increment number of sides
     }
 
+    // Generate vertices for polygon given sides and radius at given center coords
     @Override
     protected void generatePolygon(int sides, float radius, float[] center) {
         int[] window_size = my_wm.getWindowSize();

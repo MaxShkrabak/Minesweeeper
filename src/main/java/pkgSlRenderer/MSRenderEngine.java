@@ -42,4 +42,5 @@ public abstract class MSRenderEngine {
     public abstract void render(float radius);
     public abstract void render();
 
+    public abstract void render(float radius, int sides, int numPolygons);
 }

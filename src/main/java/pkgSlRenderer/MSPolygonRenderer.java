@@ -1,25 +1,25 @@
 package pkgSlRenderer;
 
-import java.util.Random;
+import java.awt.*;
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11C.glClear;
 
-public class SLPolygonRenderer extends SLRenderEngine {
+public class MSPolygonRenderer extends MSRenderEngine {
     private static final float DEFAULT_POLYGON_RADIUS = 0.5f;
     private static final int MAX_POLYGON_SIDES = 20;
     private static final int DEFAULT_POLYGON_SIDES = 3;
     private static final int DEF_TIME_DELAY = 500;
     private static final int DEF_ROWS = 30, DEF_COLS = 30;
 
-    Random rand = new Random();
     private float polygonRadius;
     private int currNumSides;
 
     // Constructor
-    public SLPolygonRenderer() {
+    public MSPolygonRenderer() {
         this.polygonRadius = DEFAULT_POLYGON_RADIUS;    // Starts with 0.05f radius
         this.currNumSides = DEFAULT_POLYGON_SIDES;      // Starts with 3 sides
     }
@@ -44,8 +44,9 @@ public class SLPolygonRenderer extends SLRenderEngine {
             }
 
             renderPolygons(cols, rows);
+
             my_wm.swapBuffers();
-            if (frameDelay != 0) {
+            if (frameDelay > 0) {
                 try{
                     Thread.sleep(frameDelay);
                 } catch (InterruptedException e) {
@@ -76,14 +77,12 @@ public class SLPolygonRenderer extends SLRenderEngine {
     }
 
     private void renderPolygons(int rows, int cols) {
-        final float begin_angle = 0.0f, end_angle = (float) (2.0f * Math.PI) / currNumSides;
         int[] windowSize = my_wm.getWindowSize();
         int width = windowSize[0], height = windowSize[1];
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        setMaxSides(++currNumSides); // Increment number of sides
-        glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random polygon color
+        randomColor();
 
         System.out.println(currNumSides); // Testing purposes
 
@@ -97,53 +96,25 @@ public class SLPolygonRenderer extends SLRenderEngine {
             for (int col = 0; col < cols; col++) {
                 // Center position for each polygon
                 float[] center = {
-                        (col + DEFAULT_POLYGON_RADIUS) * w_c,  // Center x-coord
-                        (row + DEFAULT_POLYGON_RADIUS) * h_r   // Center y-coord
+                        (col + DEFAULT_POLYGON_RADIUS) * w_c,  // Center x-coordinates
+                        (row + DEFAULT_POLYGON_RADIUS) * h_r   // Center y-coordinates
                 };
 
                 glBegin(GL_TRIANGLE_FAN);
-                generatePolygonVertices(polygonRadius, center, begin_angle, end_angle, currNumSides, width, height);
+                generatePolygon(currNumSides, polygonRadius, center);
                 glEnd();
             }
         }
+        setMaxSides(++currNumSides); // Increment number of sides
     }
 
-    /*
-    // Method to Render Circle(s)
-    public void render(int frameDelay, int rows, int cols) {
-        double lastUpdate = glfwGetTime();
+    @Override
+    protected void generatePolygon(int sides, float radius, float[] center) {
+        int[] window_size = my_wm.getWindowSize();
+        int height = window_size[0];
+        int width = window_size[1];
+        float theta = 0.0f, delT = (float) (2.0f * Math.PI) / sides;
 
-        final float begin_angle = 0.0f, end_angle = (float) (2.0f * Math.PI) / TRIANGLES_PER_CIRCLE;
-
-        updateRandVertices();
-
-        while (!my_wm.isGlfwWindowClosed()) {
-            double currTime = glfwGetTime();
-            glfwPollEvents();
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            // Render new vertices and colors
-            if (currTime - lastUpdate >= (UPDATE_INTERVAL / 1000.0)) {
-                lastUpdate = currTime;
-                updateRandVertices();
-            }
-
-            for (int i = 0; i < MAX_CIRCLES; i++) {
-                // Random color for the circle(s)
-                glColor4f(rand_colors[i][0], rand_colors[i][1], rand_colors[i][2], rand_colors[i][3]);
-
-                // Generate circle(s)
-                glBegin(GL_TRIANGLE_FAN);
-                generateCircleSegmentVertices(C_RADIUS, rand_coords[i], begin_angle, end_angle, TRIANGLES_PER_CIRCLE);
-                glEnd();
-            }
-            my_wm.swapBuffers();
-        }
-        my_wm.destroyGlfwWindow();
-    }
-     */
-
-    private void generatePolygonVertices(float radius, float[] center, float theta, float delT, int sides, int width, int height) {
         for (int i = 0; i < sides; i++) {
             float x = (float) Math.cos(theta) * radius + center[0];
             float y = (float) Math.sin(theta) * radius + center[1];
@@ -152,18 +123,4 @@ public class SLPolygonRenderer extends SLRenderEngine {
             theta += delT;
         }
     }
-
-    /*
-    private void generateCircleSegmentVertices(float radius, float[] center, float theta, float delT, int maxTriangles) {
-        for (int num_tri = 0; num_tri <= maxTriangles; ++num_tri) {
-            // Calculate vertices
-            float x = (float) Math.cos(theta) * radius + center[0];
-            float y = (float) Math.sin(theta) * radius + center[1];
-
-            glVertex3f(x, y, 0.0f);
-            theta += delT;
-        }
-    }
-     */
-
 }

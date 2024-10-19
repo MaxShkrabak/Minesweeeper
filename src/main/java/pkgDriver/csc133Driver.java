@@ -1,19 +1,19 @@
 package pkgDriver;
 
-import pkgSlRenderer.SLPolygonRenderer;
-import pkgSlRenderer.SLRenderEngine;
+import pkgSlRenderer.MSPolygonRenderer;
+import pkgSlRenderer.MSRenderEngine;
 
-import static pkgDriver.SLSpot.*;
-import pkgSlUtils.SLWindowManager;
+import static pkgDriver.MSSpot.*;
+import pkgSlUtils.MSWindowManager;
 
 public class csc133Driver {
 
     public static void main(String[] my_args) {
-        SLRenderEngine my_re = new SLPolygonRenderer();
-        SLWindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, "CSUS CSC133");
-        my_re.initOpenGL(SLWindowManager.get());
+        MSRenderEngine my_re = new MSPolygonRenderer();
+        MSWindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, "CSUS CSC133");
+        my_re.initOpenGL(MSWindowManager.get());
 
-        final int FRAME_DELAY = 700, NUM_ROWS = 7, NUM_COLS = 4;
+        final int FRAME_DELAY = 700, NUM_ROWS = 9, NUM_COLS = 9;
         my_re.render(FRAME_DELAY, NUM_ROWS, NUM_COLS);
     }  //  public static void main(String[] my_args)
 

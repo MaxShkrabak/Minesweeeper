@@ -6,12 +6,6 @@ import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11C.glClear;
 
 public class MSPolygonRenderer extends MSRenderEngine {
-    private static final float DEFAULT_POLYGON_RADIUS = 0.5f;
-    private static final int MAX_POLYGON_SIDES = 20;
-    private static final int DEFAULT_POLYGON_SIDES = 3;
-    private static final int DEF_TIME_DELAY = 500;
-    private static final int DEF_ROWS = 30, DEF_COLS = 30;
-
     private float polygonRadius;
     private int currNumSides;
     private int numbPolygons;
@@ -89,20 +83,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
 
-            for (int i = 0; i < numbPolygons; i++) {
-                // Random shapes 3-sides
-                int randomSides = rand.nextInt(currNumSides - 2) + 3;
-
-                float[] center = {
-                        rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random X
-                        rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random Y
-                };
-
-                randomColor();
-                glBegin(GL_TRIANGLE_FAN);
-                super.generatePolygon(randomSides, polygonRadius, center);
-                glEnd();
-            }
+            renderRandomPolygons();
 
             my_wm.swapBuffers();
             if (DEF_TIME_DELAY > 0) {
@@ -123,7 +104,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        randomColor();
+        randomColor(); // Each frame will have newly colorized polygons
 
         System.out.println(currNumSides); // Testing purposes
 
@@ -163,6 +144,22 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
             glVertex3f(x / ((float) width / 2) - 1, y / ((float) height / 2) -1, 0.0f);
             theta += delT;
+        }
+    }
+
+    private void renderRandomPolygons() {
+        for (int i = 0; i < numbPolygons; i++) {
+            // Random shapes 3-sides
+            int randomSides = rand.nextInt(currNumSides - 2) + 3;
+            float[] center = {
+                    rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random X
+                    rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random Y
+            };
+
+            randomColor();  // Each polygon will have a random color
+            glBegin(GL_TRIANGLE_FAN);
+            super.generatePolygon(randomSides, polygonRadius, center);
+            glEnd();
         }
     }
 }

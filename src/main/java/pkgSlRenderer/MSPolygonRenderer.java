@@ -138,7 +138,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
         int[] window_size = my_wm.getWindowSize();
         int height = window_size[0];
         int width = window_size[1];
-        float theta = 0.0f, delT = (float) (2.0f * Math.PI) / sides;
+        float theta = (float) (Math.PI / 4), delT = (float) (2.0f * Math.PI) / sides;
 
         for (int i = 0; i < sides; i++) {
             float x = (float) Math.cos(theta) * radius + center[0];

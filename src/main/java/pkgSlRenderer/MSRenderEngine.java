@@ -11,8 +11,8 @@ import static org.lwjgl.opengl.GL11C.glClearColor;
 
 public abstract class MSRenderEngine {
     protected static final float DEFAULT_POLYGON_RADIUS = 0.5f;
-    protected static final int MAX_POLYGON_SIDES = 20;
-    protected static final int DEFAULT_POLYGON_SIDES = 3;
+    protected static final int MAX_POLYGON_SIDES = 4;
+    protected static final int DEFAULT_POLYGON_SIDES = 4;
     protected static final int DEF_TIME_DELAY = 500;
     protected static final int DEF_ROWS = 30, DEF_COLS = 30;
 

@@ -76,31 +76,6 @@ public class MSPolygonRenderer extends MSRenderEngine {
         render(DEF_TIME_DELAY, DEF_COLS, DEF_ROWS);
     }
 
-    // Render randomly placed polygons
-    @Override
-    public void render(float radius, int sides, int numPolygons) {
-        setRadius(radius);
-        setMaxSides(sides);
-        setNumPolygons(numPolygons);
-
-        while (!my_wm.isGlfwWindowClosed()) {
-            glfwPollEvents();
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            renderRandomPolygons();
-
-            my_wm.swapBuffers();
-            if (DEF_TIME_DELAY > 0) {
-                try{
-                    Thread.sleep(DEF_TIME_DELAY);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-        my_wm.destroyGlfwWindow();
-    }
-
     // Method used to render 'grid' of polygons based on rows and cols
     private void renderPolygons(int rows, int cols) {
         int[] windowSize = my_wm.getWindowSize();
@@ -159,22 +134,6 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
             glVertex3f(x / ((float) width / 2) - 1, y / ((float) height / 2) -1, 0.0f);
             theta += delT;
-        }
-    }
-
-    private void renderRandomPolygons() {
-        for (int i = 0; i < numbPolygons; i++) {
-            // Random shapes 3-sides
-            int randomSides = rand.nextInt(currNumSides - 2) + 3;
-            float[] center = {
-                    rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random X
-                    rand.nextFloat() * (2.0f - 2 * polygonRadius) - 1.0f + polygonRadius, // Random Y
-            };
-
-            randomColor();  // Each polygon will have a random color
-            glBegin(GL_TRIANGLE_FAN);
-            super.generatePolygon(randomSides, polygonRadius, center);
-            glEnd();
         }
     }
 }

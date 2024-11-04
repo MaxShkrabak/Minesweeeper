@@ -48,5 +48,4 @@ public abstract class MSRenderEngine {
     public abstract void render(int frameDelay, int rows, int cols);
     public abstract void render(float radius);
     public abstract void render();
-    public abstract void render(float radius, int sides, int numPolygons); // Render Random polygons
 }

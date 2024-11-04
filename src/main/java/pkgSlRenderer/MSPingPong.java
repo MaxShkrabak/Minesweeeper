@@ -35,25 +35,6 @@ public class MSPingPong {
         nextArray = temp;
     }
 
-    // Count the Nearest Neighbors of a cell
-    public int countNN() {
-        int count = 0;
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                int prevC = (COLS + j - 1) % COLS;
-                int nextC = (j + 1) % COLS;
-                int nextR = (i + 1) % COLS;
-                int prevR = (ROWS + i - 1) % ROWS;
-
-                count += getLive(i, prevC) ? 1 : 0;
-                count += getLive(prevR, j) ? 1 : 0;
-                count +=getLive(i, nextC) ? 1 : 0;
-                count += getLive(nextR, j) ? 1 : 0;
-            }
-        }
-        return count;
-    }
-
     // Count the Next Nearest Neighbors of a cell
     public void countNNN() {
         for (int i = 0; i < ROWS; i++) {

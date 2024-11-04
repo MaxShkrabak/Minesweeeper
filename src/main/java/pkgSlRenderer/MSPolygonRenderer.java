@@ -9,6 +9,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
     private float polygonRadius;
     private int currNumSides;
     private int numbPolygons;
+    private MSPingPong myPingPong;
 
     // Constructor
     public MSPolygonRenderer() {
@@ -30,6 +31,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
     @Override
     public void render(int frameDelay, int cols, int rows) {
+        this.myPingPong = new MSPingPong(rows,cols);
         while (!my_wm.isGlfwWindowClosed()) {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
@@ -40,6 +42,8 @@ public class MSPolygonRenderer extends MSRenderEngine {
             }
 
             renderPolygons(cols, rows);
+
+            myPingPong.nextArray();
 
             my_wm.swapBuffers();
             if (frameDelay > 0) {
@@ -118,6 +122,16 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
+
+                boolean isAlive = myPingPong.getLive(row, col);
+
+                // Colors for live and dead
+                if (isAlive) {
+                    glColor3f(0.6f,1.0f,0.6f); // Alive color
+                } else {
+                    glColor3f(0.0f,0.0f,0.0f);    // Dead color
+                }
+
                 // Center position for each polygon
                 float[] center = {
                         (col + DEFAULT_POLYGON_RADIUS) * w_c,  // Center x-coordinates
@@ -129,7 +143,6 @@ public class MSPolygonRenderer extends MSRenderEngine {
                 glEnd();
             }
         }
-        setMaxSides(++currNumSides); // Increment number of sides
     }
 
     // Generate vertices for polygon given sides and radius at given center coords

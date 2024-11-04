@@ -24,7 +24,7 @@ public class MSPingPong {
     }
 
     // Gets a specific element from the Live Array
-    private boolean getLive(int row, int col) {
+    public boolean getLive(int row, int col) {
         return liveArray[row][col];
     }
 
@@ -109,5 +109,10 @@ public class MSPingPong {
                 liveArray[i][j] = rand.nextBoolean();
             }
         }
+    }
+
+    public void nextArray() {
+        countNNN();
+        swapArray();
     }
 }

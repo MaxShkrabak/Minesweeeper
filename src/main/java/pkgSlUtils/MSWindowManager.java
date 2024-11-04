@@ -53,6 +53,8 @@ public class MSWindowManager {
 
         glfwMakeContextCurrent(win_id);
 
+        glfwSetKeyCallback(win_id, MSKeyListener::keyCallback);
+
         return win_id;
     }
 

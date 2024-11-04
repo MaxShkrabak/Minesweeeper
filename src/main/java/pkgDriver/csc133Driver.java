@@ -4,6 +4,8 @@ import pkgSlRenderer.MSPolygonRenderer;
 import pkgSlRenderer.MSRenderEngine;
 
 import static pkgDriver.MSSpot.*;
+
+import pkgSlUtils.MSKeyListener;
 import pkgSlUtils.MSWindowManager;
 
 public class csc133Driver {
@@ -13,8 +15,8 @@ public class csc133Driver {
         MSWindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, "Game Of Life");
         my_re.initOpenGL(MSWindowManager.get());
 
-        final int FRAME_DELAY = 400, NUM_ROWS = 300, NUM_COLS = 300;
-        my_re.render(0,100,100);
+        final int FRAME_DELAY = 300, NUM_ROWS = 100, NUM_COLS = 100;
+        my_re.render(FRAME_DELAY,NUM_ROWS,NUM_COLS);
     }  //  public static void main(String[] my_args)
 
 }  // public class csc133Driver(...)

@@ -1,5 +1,7 @@
 package pkgSlRenderer;
 
+import pkgSlUtils.MSKeyListener;
+
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
@@ -8,8 +10,8 @@ import static org.lwjgl.opengl.GL11C.glClear;
 public class MSPolygonRenderer extends MSRenderEngine {
     private float polygonRadius;
     private int currNumSides;
-    private int numbPolygons;
     private MSPingPong myPingPong;
+
 
     // Constructor
     public MSPolygonRenderer() {
@@ -21,17 +23,13 @@ public class MSPolygonRenderer extends MSRenderEngine {
         this.polygonRadius = radius;
     }
 
-    public void setMaxSides(int sides) {
-        this.currNumSides = sides;
-    }
-
-    public void setNumPolygons(int numPolygons) {
-        this.numbPolygons = numPolygons;
-    }
-
     @Override
     public void render(int frameDelay, int cols, int rows) {
         this.myPingPong = new MSPingPong(rows,cols);
+
+        // Gets the passed in frame delay and sends it to keyListener
+        MSKeyListener.initFrameDelay(frameDelay);
+
         while (!my_wm.isGlfwWindowClosed()) {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
@@ -46,6 +44,9 @@ public class MSPolygonRenderer extends MSRenderEngine {
             myPingPong.nextArray();
 
             my_wm.swapBuffers();
+
+            frameDelay = MSKeyListener.getFrameDelay();
+
             if (frameDelay > 0) {
                 try{
                     Thread.sleep(frameDelay);
@@ -83,17 +84,11 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        randomColor(); // Each frame will have newly colorized polygons
-
-        //System.out.println(currNumSides); // Testing purposes
-
         float w_c = (float) width / cols; // Width for each column
         float h_r = (float) height / rows; // Height for each row
 
         float maxDimension = Math.max(cols, rows); // Finds larger of two arguments
         setRadius(Math.min(width, height) / (maxDimension * 2)); // New scaled radius
-
-        //System.out.println(polygonRadius); // Testing purposes
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {

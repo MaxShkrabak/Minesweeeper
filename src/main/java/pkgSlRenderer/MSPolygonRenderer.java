@@ -26,6 +26,9 @@ public class MSPolygonRenderer extends MSRenderEngine {
     @Override
     public void render(int frameDelay, int cols, int rows) {
         this.myPingPong = new MSPingPong(rows,cols);
+        MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
+
+        MSKeyListener.commandMenu(); // Display commands from keyListener
 
         // Gets the passed in frame delay and sends it to keyListener
         MSKeyListener.initFrameDelay(frameDelay);
@@ -40,9 +43,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
             }
 
             renderPolygons(cols, rows);
-
-            myPingPong.nextArray();
-
+            myPingPong.nextArray(); // Invoke countNNN and swap arrays
             my_wm.swapBuffers();
 
             frameDelay = MSKeyListener.getFrameDelay();
@@ -81,6 +82,8 @@ public class MSPolygonRenderer extends MSRenderEngine {
     private void renderPolygons(int rows, int cols) {
         int[] windowSize = my_wm.getWindowSize();
         int width = windowSize[0], height = windowSize[1];
+        float red = 0.06f, green = 1.0f, blue = 0.9f;
+        float padding = 1.5f;
 
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -88,7 +91,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
         float h_r = (float) height / rows; // Height for each row
 
         float maxDimension = Math.max(cols, rows); // Finds larger of two arguments
-        setRadius(Math.min(width, height) / (maxDimension * 2)); // New scaled radius
+        setRadius(Math.min(width, height) / (maxDimension * padding)); // New scaled radius
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -97,9 +100,9 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
                 // Colors for live and dead
                 if (isAlive) {
-                    glColor3f(0.6f,1.0f,0.6f); // Alive color
+                    glColor3f(red,green,blue); // Alive color
                 } else {
-                    glColor3f(0.0f,0.0f,0.0f);    // Dead color
+                    glColor3f(0,0,0);    // Dead color
                 }
 
                 // Center position for each polygon

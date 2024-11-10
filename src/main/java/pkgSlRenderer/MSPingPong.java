@@ -10,6 +10,7 @@ public class MSPingPong {
     private final int COLS;
     private final Random rand = new Random();
 
+    // Constructor
     public MSPingPong(int rows, int cols) {
         this.ROWS = rows;
         this.COLS = cols;
@@ -73,16 +74,6 @@ public class MSPingPong {
         }
     }
 
-    // Display contents in array
-    public void printArray() {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                System.out.print((liveArray[i][j] ? 1 : 0) + " ");
-            }
-            System.out.println();
-        }
-    }
-
     // Method used to reset board to 0 or 1
     public void resetBoard() {
         for (int i = 0; i < liveArray.length; i++) {
@@ -92,6 +83,7 @@ public class MSPingPong {
         }
     }
 
+    // Method to count all NNN and swap the arrays
     public void nextArray() {
         countNNN();
         swapArray();

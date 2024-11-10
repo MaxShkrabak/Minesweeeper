@@ -1,7 +1,6 @@
 package pkgSlUtils;
 
 import pkgSlRenderer.MSPingPong;
-import pkgSlRenderer.MSPolygonRenderer;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -10,6 +9,8 @@ public class MSKeyListener {
     private final boolean[] keyPressed = new boolean[400];
     private static int frameDelay = 0;
     private static MSPingPong myPingPong;
+
+    // Private constructor
     private MSKeyListener() {}
 
     public static MSKeyListener get() {
@@ -34,14 +35,7 @@ public class MSKeyListener {
         } else if (action == GLFW_RELEASE){
             get().keyPressed[key] = false;
         }
-        
-        //TODO: Not sure if this is needed
-        /*
-        if (MSKeyListener.isKeyPressed(GLFW_KEY_RIGHT_SHIFT)) {
-            System.out.println("Shift is pressed");
-            MSKeyListener.resetKeypressEvent(GLFW_KEY_RIGHT_SHIFT);
-        }
-        */
+
         if (MSKeyListener.isKeyPressed(GLFW_KEY_I)) {
             frameDelay += 500;
             System.out.println("Delay increased - Delay is now: " + frameDelay);
@@ -60,8 +54,9 @@ public class MSKeyListener {
             System.out.println("The 'Game of Life' board was reset");
         }
         if (MSKeyListener.isKeyPressed(GLFW_KEY_ESCAPE)) {
-            glfwSetWindowShouldClose(my_window,true);
+            glfwSetWindowShouldClose(my_window,true); // Terminates application
             System.out.println("Window closed - Good bye!");
+            resetKeypressEvent(GLFW_KEY_ESCAPE);
         }
     }
 

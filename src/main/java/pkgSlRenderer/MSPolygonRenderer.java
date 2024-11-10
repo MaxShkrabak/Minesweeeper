@@ -11,7 +11,8 @@ public class MSPolygonRenderer extends MSRenderEngine {
     private float polygonRadius;
     private int currNumSides;
     private MSPingPong myPingPong;
-
+    final float[] ALIVE = {0.06f, 1.0f,0.9f}; // Light blue
+    final float[] DEAD = {0.0f, 0.0f, 0.0f}; // Black
 
     // Constructor
     public MSPolygonRenderer() {
@@ -82,7 +83,6 @@ public class MSPolygonRenderer extends MSRenderEngine {
     private void renderPolygons(int rows, int cols) {
         int[] windowSize = my_wm.getWindowSize();
         int width = windowSize[0], height = windowSize[1];
-        float red = 0.06f, green = 1.0f, blue = 0.9f;
         float padding = 1.5f;
 
         glClear(GL_COLOR_BUFFER_BIT);
@@ -95,14 +95,13 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-
                 boolean isAlive = myPingPong.getLive(row, col);
 
                 // Colors for live and dead
                 if (isAlive) {
-                    glColor3f(red,green,blue); // Alive color
+                    glColor3f(ALIVE[0],ALIVE[1],ALIVE[2]); // Alive color
                 } else {
-                    glColor3f(0,0,0);    // Dead color
+                    glColor3f(DEAD[0],DEAD[1],DEAD[2]);    // Dead color
                 }
 
                 // Center position for each polygon

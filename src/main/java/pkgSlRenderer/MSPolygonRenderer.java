@@ -25,7 +25,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
     }
 
     @Override
-    public void render(int frameDelay, int cols, int rows) {
+    public void render(int frameDelay, int rows, int cols) {
         this.myPingPong = new MSPingPong(rows,cols);
         MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
 
@@ -43,7 +43,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
                 currNumSides = DEFAULT_POLYGON_SIDES;
             }
 
-            renderPolygons(cols, rows);
+            renderPolygons(rows, cols);
             myPingPong.nextArray(); // Invoke countNNN and swap arrays
             my_wm.swapBuffers();
 
@@ -83,7 +83,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
     private void renderPolygons(int rows, int cols) {
         int[] windowSize = my_wm.getWindowSize();
         int width = windowSize[0], height = windowSize[1];
-        float padding = 1.5f;
+        float padding = 2f;
 
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -96,13 +96,12 @@ public class MSPolygonRenderer extends MSRenderEngine {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 boolean isAlive = myPingPong.getLive(row, col);
-
-                // Colors for live and dead
                 if (isAlive) {
                     glColor3f(ALIVE[0],ALIVE[1],ALIVE[2]); // Alive color
                 } else {
-                    glColor3f(DEAD[0],DEAD[1],DEAD[2]);    // Dead color
+                    glColor3f(DEAD[0],DEAD[1],DEAD[2]);
                 }
+
 
                 // Center position for each polygon
                 float[] center = {
@@ -123,7 +122,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
         int[] window_size = my_wm.getWindowSize();
         int height = window_size[0];
         int width = window_size[1];
-        float theta = (float) (Math.PI / 4), delT = (float) (2.0f * Math.PI) / sides;
+        float theta = (float) (Math.PI / 4), delT = (float) (2 * Math.PI) / sides;
 
         for (int i = 0; i < sides; i++) {
             float x = (float) Math.cos(theta) * radius + center[0];

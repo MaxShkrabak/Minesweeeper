@@ -43,8 +43,8 @@ public class MSPingPong {
                 int count = 0;
                 int prevC = (COLS + j - 1) % COLS;
                 int nextC = (j + 1) % COLS;
-                int nextR = (i + 1) % COLS;
-                int prevR = (ROWS + i - 1) % COLS;
+                int nextR = (i + 1) % ROWS;
+                int prevR = (ROWS + i - 1) % ROWS;
 
                 // Nearest Neighbors
                 count += getLive(i, prevC) ? 1 : 0;

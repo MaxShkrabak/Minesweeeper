@@ -41,4 +41,8 @@ public class MSShaderObject {
         my_vec4.get(vec4Buffer);
         glUniform4fv(var_location, vec4Buffer);
     } // public void loadVec4f(...)
+
+    public int getProgID() {
+        return programId;
+    }
 }

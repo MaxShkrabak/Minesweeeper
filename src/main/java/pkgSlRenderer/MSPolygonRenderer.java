@@ -1,27 +1,25 @@
 package pkgSlRenderer;
 
+import org.joml.Vector4f;
+import org.lwjgl.BufferUtils;
 import pkgSlUtils.MSKeyListener;
+
+import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11C.glClear;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL15C.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class MSPolygonRenderer extends MSRenderEngine {
-    private float polygonRadius;
-    private int currNumSides;
     private MSPingPong myPingPong;
-    final float[] ALIVE = {0.06f, 1.0f,0.9f}; // Light blue
-    final float[] DEAD = {0.0f, 0.0f, 0.0f}; // Black
 
     // Constructor
     public MSPolygonRenderer() {
-        this.polygonRadius = DEFAULT_POLYGON_RADIUS;    // Starts with 0.5f radius
-        this.currNumSides = DEFAULT_POLYGON_SIDES;      // Starts with 3 sides
-    }
-
-    public void setRadius(float radius) {
-        this.polygonRadius = radius;
     }
 
     @Override
@@ -34,102 +32,50 @@ public class MSPolygonRenderer extends MSRenderEngine {
         // Gets the passed in frame delay and sends it to keyListener
         MSKeyListener.initFrameDelay(frameDelay);
 
-        while (!my_wm.isGlfwWindowClosed()) {
-            glfwPollEvents();
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            // If currSides is more than maxSides, reset back to 3
-            if (currNumSides > MAX_POLYGON_SIDES) {
-                currNumSides = DEFAULT_POLYGON_SIDES;
-            }
-
-            renderPolygons(rows, cols);
-            myPingPong.nextArray(); // Invoke countNNN and swap arrays
-            my_wm.swapBuffers();
-
-            frameDelay = MSKeyListener.getFrameDelay();
-
-            if (frameDelay > 0) {
-                try{
-                    Thread.sleep(frameDelay);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
+        renderPolygons(rows, cols);
         my_wm.destroyGlfwWindow();
-    }
-
-    // Renders as many rows and cols as radius allows to fit in window
-    @Override
-    public void render(float polygonRadius) {
-        int[] windowSize = my_wm.getWindowSize();
-        int width = windowSize[0];
-        int height = windowSize[1];
-
-        int cols = (int) (width / (polygonRadius * 2));
-        int rows = (int) (height / (polygonRadius * 2));
-
-        render(DEF_TIME_DELAY, cols, rows);
-    }
-
-    // Default Render Method
-    @Override
-    public void render(){
-        render(DEF_TIME_DELAY, DEF_COLS, DEF_ROWS);
     }
 
     // Method used to render 'grid' of polygons based on rows and cols
     private void renderPolygons(int rows, int cols) {
-        int[] windowSize = my_wm.getWindowSize();
-        int width = windowSize[0], height = windowSize[1];
-        float padding = 2f;
+        Vector4f COLOR_FACTOR = new Vector4f(0.7f, 0.2f, 0.1f,1.0f);
+        MSCamera my_cam = new MSCamera();
 
-        glClear(GL_COLOR_BUFFER_BIT);
+        while (!my_wm.isGlfwWindowClosed()) {
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
 
-        float w_c = (float) width / cols; // Width for each column
-        float h_r = (float) height / rows; // Height for each row
+            shaderObj0.loadMatrix4f("uProjMatrix", my_cam.getProjectionMatrix());
+            shaderObj0.loadMatrix4f("uViewMatrix", my_cam.getViewingMatrix());
 
-        float maxDimension = Math.max(cols, rows); // Finds larger of two arguments
-        setRadius(Math.min(width, height) / (maxDimension * padding)); // New scaled radius
+            glBindVertexArray(vaoID);
+            glUseProgram(shaderObj0.getProgID());
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                boolean isAlive = myPingPong.getLive(row, col);
-                if (isAlive) {
-                    glColor3f(ALIVE[0],ALIVE[1],ALIVE[2]); // Alive color
-                } else {
-                    glColor3f(DEAD[0],DEAD[1],DEAD[2]);
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    shaderObj0.loadVector4f("COLOR_FACTOR", COLOR_FACTOR);
+                    renderTile(row,col);
                 }
-
-
-                // Center position for each polygon
-                float[] center = {
-                        (col + DEFAULT_POLYGON_RADIUS) * w_c,  // Center x-coordinates
-                        (row + DEFAULT_POLYGON_RADIUS) * h_r   // Center y-coordinates
-                };
-
-                glBegin(GL_TRIANGLE_FAN);
-                generatePolygon(currNumSides, polygonRadius, center);
-                glEnd();
             }
+            my_wm.swapBuffers();
         }
     }
 
-    // Generate vertices for polygon given sides and radius at given center coords
-    @Override
-    protected void generatePolygon(int sides, float radius, float[] center) {
-        int[] window_size = my_wm.getWindowSize();
-        int height = window_size[0];
-        int width = window_size[1];
-        float theta = (float) (Math.PI / 4), delT = (float) (2 * Math.PI) / sides;
+    // Render the particular tile
+    public void renderTile(int row, int col) {
+        // Compute the vertexArray offset
+        int va_offset = getVAVIndex(row, col); // vertex array offset of tile
+        int[] rgVertexIndices = new int[] {va_offset, va_offset+1, va_offset+2,
+                va_offset, va_offset+2, va_offset+3};
+        IntBuffer VertexIndicesBuffer = BufferUtils.createIntBuffer(rgVertexIndices.length);
+        VertexIndicesBuffer.put(rgVertexIndices).flip();
+        int eboID = glGenBuffers();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, VertexIndicesBuffer, GL_STATIC_DRAW);
+        glDrawElements(GL_TRIANGLES, rgVertexIndices.length, GL_UNSIGNED_INT, 0);
+    } // public void renderTile(...)
 
-        for (int i = 0; i < sides; i++) {
-            float x = (float) Math.cos(theta) * radius + center[0];
-            float y = (float) Math.sin(theta) * radius + center[1];
-
-            glVertex3f(x / ((float) width / 2) - 1, y / ((float) height / 2) -1, 0.0f);
-            theta += delT;
-        }
+    private int getVAVIndex(int row, int col) {
+        return (row * DEF_COLS + col) * VPT;
     }
 }

@@ -63,6 +63,8 @@ public abstract class MSRenderEngine {
         glEnableVertexAttribArray(index1);
 
         shaderObj0 = new MSShaderObject("assets/shaders/vs_texture_1.glsl", "assets/shaders/fs_texture_1.glsl");
+        shaderObj0.compile_shader();
+        shaderObj0.set_shader_program();
     }
 
     protected void randomColor() {

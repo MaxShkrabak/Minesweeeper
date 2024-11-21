@@ -9,6 +9,5 @@ uniform mat4 uViewMatrix;
 
 void main()
 {
-    fTexCoords = aTexCoords;
     gl_Position = uProjMatrix * uViewMatrix * vec4(aPos, 1.0);
 }

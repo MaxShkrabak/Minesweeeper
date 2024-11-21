@@ -5,17 +5,28 @@ import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.lwjgl.opengl.GL20.*;
 
 public class MSShaderObject {
-
+    private String vsFile, fsFile;
     private int programId;
-    public MSShaderObject(String vsFile, String fsFile) {
+    public MSShaderObject(String vs, String fs) {
+        try {
+            vsFile = new String(Files.readAllBytes(Paths.get(vs)));
+            fsFile = new String(Files.readAllBytes(Paths.get(fs)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void compile_shader() {
         programId = glCreateProgram();
 
         int vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(programId, vsFile);
+        glShaderSource(vs, vsFile);
         glCompileShader(vs);
         glAttachShader(programId, vs);
 
@@ -23,6 +34,10 @@ public class MSShaderObject {
         glShaderSource(fs, fsFile);
         glCompileShader(fs);
         glAttachShader(programId, fs);
+        glLinkProgram(programId);
+    }
+
+    public void set_shader_program() {
         glLinkProgram(programId);
     }
 

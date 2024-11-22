@@ -17,28 +17,29 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 public abstract class MSRenderEngine {
-    protected static final float DEFAULT_POLYGON_RADIUS = 0.5f;
-    protected static final int MAX_POLYGON_SIDES = 4;
-    protected static final int DEFAULT_POLYGON_SIDES = 4;
-    protected static final int DEF_TIME_DELAY = 500;
-    protected static final int DEF_ROWS = 30, DEF_COLS = 30;
-    protected static final int floatPerSquare = 5;
-    protected int VPT = 4;
+    protected static final int FLOAT_PER_SQUARE = 5;
+    protected static final int VPT = 4;
+
     protected int vaoID, vboID;
+    protected int frameDelay;
+    protected int rows, cols;
 
     Random rand = new Random();
     protected MSWindowManager my_wm;
     protected MSShaderObject shaderObj0;
 
-    public void initOpenGL(MSWindowManager wm) {
+    public void initOpenGL(MSWindowManager wm, int frameD, int row, int col) {
         my_wm = wm;
         my_wm.updateContextToThis();
+        frameDelay = frameD;
+        rows = row;
+        cols = col;
 
         GL.createCapabilities();
         float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 0.0f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
-        float[] mv = new float[DEF_ROWS * DEF_COLS * floatPerSquare];
+        float[] mv = new float[rows * cols * FLOAT_PER_SQUARE];
 
         FloatBuffer fb = BufferUtils.createFloatBuffer(mv.length);
         fb.put(mv).flip();
@@ -67,9 +68,5 @@ public abstract class MSRenderEngine {
         shaderObj0.set_shader_program();
     }
 
-    protected void randomColor() {
-        glColor4f(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1.0f); // Random polygon color
-    }
-
-    public abstract void render(int frameDelay, int rows, int cols);
+    public abstract void render();
 }

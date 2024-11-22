@@ -23,7 +23,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
     }
 
     @Override
-    public void render(int frameDelay, int rows, int cols) {
+    public void render() {
         this.myPingPong = new MSPingPong(rows,cols);
         MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
 
@@ -76,6 +76,6 @@ public class MSPolygonRenderer extends MSRenderEngine {
     } // public void renderTile(...)
 
     private int getVAVIndex(int row, int col) {
-        return (row * DEF_COLS + col) * VPT;
+        return (row * cols + col) * VPT;
     }
 }

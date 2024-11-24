@@ -15,16 +15,15 @@ import static org.lwjgl.opengl.GL15C.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-public class MSPolygonRenderer extends MSRenderEngine {
-    private MSPingPong myPingPong;
+public class MSTileRenderer extends MSRenderEngine {
 
     // Constructor
-    public MSPolygonRenderer() {
+    public MSTileRenderer() {
     }
 
     @Override
     public void render() {
-        this.myPingPong = new MSPingPong(rows,cols);
+        MSPingPong myPingPong = new MSPingPong(rows, cols);
         MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
 
         MSKeyListener.commandMenu(); // Display commands from keyListener
@@ -32,13 +31,13 @@ public class MSPolygonRenderer extends MSRenderEngine {
         // Gets the passed in frame delay and sends it to keyListener
         MSKeyListener.initFrameDelay(frameDelay);
 
-        renderPolygons(rows, cols);
+        renderTiles(rows, cols);
         my_wm.destroyGlfwWindow();
     }
 
-    // Method used to render 'grid' of polygons based on rows and cols
-    private void renderPolygons(int rows, int cols) {
-        Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.7f,1.0f);
+    // Method used to render 'grid' of square tiles
+    private void renderTiles(int rows, int cols) {
+        Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.7f,1.0f); // Color of tiles
         MSCamera my_cam = new MSCamera();
 
         while (!my_wm.isGlfwWindowClosed()) {

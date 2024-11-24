@@ -1,6 +1,6 @@
 package pkgDriver;
 
-import pkgSlRenderer.MSPolygonRenderer;
+import pkgSlRenderer.MSTileRenderer;
 import pkgSlRenderer.MSRenderEngine;
 
 import static pkgDriver.MSSpot.*;
@@ -11,10 +11,10 @@ public class csc133Driver {
 
     public static void main(String[] my_args) {
         final int FRAME_DELAY = 300;
-        MSRenderEngine my_re = new MSPolygonRenderer();
+        MSRenderEngine my_re = new MSTileRenderer();
         MSWindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, WINDOW_TITLE);
-        System.out.println(WIN_WIDTH + " x " + WIN_HEIGHT);
         my_re.initOpenGL(MSWindowManager.get(), FRAME_DELAY, NUM_POLY_ROWS, NUM_POLY_COLS);
+        //System.out.println(WIN_WIDTH + " x " + WIN_HEIGHT);
 
         my_re.render();
     }  //  public static void main(String[] my_args)

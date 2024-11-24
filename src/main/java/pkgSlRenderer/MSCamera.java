@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 import static pkgDriver.MSSpot.*;
 
 public class MSCamera {
-    private Matrix4f projectionMatrix, viewMatrix;
+    private final Matrix4f projectionMatrix, viewMatrix;
 
     public MSCamera() {
         projectionMatrix = new Matrix4f();

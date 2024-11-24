@@ -6,12 +6,9 @@ import pkgDriver.MSSpot;
 import pkgSlUtils.MSWindowManager;
 
 import java.nio.FloatBuffer;
-import java.util.Random;
 
 import static org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray;
 import static org.lwjgl.opengl.ARBVertexArrayObject.glGenVertexArrays;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11C.glClearColor;
 import static org.lwjgl.opengl.GL15C.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
@@ -25,7 +22,6 @@ public abstract class MSRenderEngine {
     protected int frameDelay;
     protected int rows, cols;
 
-    Random rand = new Random();
     protected MSWindowManager my_wm;
     protected MSShaderObject shaderObj0;
 
@@ -42,7 +38,7 @@ public abstract class MSRenderEngine {
 
         float[] mv = generateVertices(rows, cols);
 
-        for (int i = 0; i < mv.length; i++) { System.out.print(mv[i] + " "); }
+        //for (int i = 0; i < mv.length; i++) { System.out.print(mv[i] + " "); }
 
         FloatBuffer fb = BufferUtils.createFloatBuffer(mv.length);
         fb.put(mv).flip();
@@ -71,6 +67,7 @@ public abstract class MSRenderEngine {
         shaderObj0.set_shader_program();
     }
 
+    // Method to generate tile vertices starting from bottom left of window
     private float[] generateVertices(int rows, int cols) {
         int totalTiles = rows * cols;
         float[] vertices = new float[totalTiles * VPT * FLOAT_PER_SQUARE];
@@ -121,5 +118,6 @@ public abstract class MSRenderEngine {
         }
         return vertices;
     }
+
     public abstract void render();
 }

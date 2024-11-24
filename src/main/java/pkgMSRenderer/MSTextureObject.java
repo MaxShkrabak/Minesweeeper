@@ -19,6 +19,7 @@ class MSTextureObject {
     public MSTextureObject(String filepath) {
         this.texFilepath = filepath;
         texID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, texID);
         // If we don't enable blending, the transparent pixels in the texture
         // will render as dark pixels:
         glEnable(GL_BLEND);

@@ -24,6 +24,7 @@ public abstract class MSRenderEngine {
 
     protected MSWindowManager my_wm;
     protected MSShaderObject shaderObj0;
+    protected MSTextureObject texObj0;
 
     public void initOpenGL(MSWindowManager wm, int frameD, int row, int col) {
         my_wm = wm;
@@ -33,7 +34,7 @@ public abstract class MSRenderEngine {
         cols = col;
 
         GL.createCapabilities();
-        float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 0.0f, CC_ALPHA = 1.0f; // Window background color (BLACK)
+        float CC_RED = 0.0f, CC_GREEN = 0.2f, CC_BLUE = 0.2f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
         float[] mv = generateVertices(rows, cols);
@@ -58,13 +59,16 @@ public abstract class MSRenderEngine {
         glVertexAttribPointer(index0, posStride, GL_FLOAT, false, vertexStride, startIndex);
         glEnableVertexAttribArray(index0);
 
-        startIndex = 3;
+        startIndex = 3 * Float.BYTES;
         glVertexAttribPointer(index1, textStride, GL_FLOAT, false, vertexStride, startIndex);
         glEnableVertexAttribArray(index1);
 
         shaderObj0 = new MSShaderObject("assets/shaders/vs_texture_1.glsl", "assets/shaders/fs_texture_1.glsl");
         shaderObj0.compile_shader();
         shaderObj0.set_shader_program();
+
+        texObj0 = new MSTextureObject("assets/images/MarioWithGun.PNG");
+        texObj0.bind_texture();
     }
 
     // Method to generate tile vertices starting from bottom left of window
@@ -90,29 +94,29 @@ public abstract class MSRenderEngine {
                 vertices[index++] = x;
                 vertices[index++] = y;
                 vertices[index++] = z;
-                vertices[index++] = 0.0f;     // Texture x
-                vertices[index++] = 0.0f;     // Texture y
+                vertices[index++] = 1.0f;     // Texture x
+                vertices[index++] = 1.0f;     // Texture y
 
                 // Bottom right
                 vertices[index++] = x + tileSize;
                 vertices[index++] = y;
                 vertices[index++] = z;
-                vertices[index++] = 1.0f;
                 vertices[index++] = 0.0f;
+                vertices[index++] = 1.0f;
 
                 // Top right
                 vertices[index++] = x + tileSize;
                 vertices[index++] = y + tileSize;
                 vertices[index++] = z;
-                vertices[index++] = 1.0f;
-                vertices[index++] = 1.0f;
+                vertices[index++] = 0.0f;
+                vertices[index++] = 0.0f;
 
                 // Top left
                 vertices[index++] = x;
                 vertices[index++] = y + tileSize;
                 vertices[index++] = z;
-                vertices[index++] = 0.0f;
                 vertices[index++] = 1.0f;
+                vertices[index++] = 0.0f;
 
             }
         }

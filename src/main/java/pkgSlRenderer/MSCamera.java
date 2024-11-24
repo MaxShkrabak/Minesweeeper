@@ -17,9 +17,9 @@ public class MSCamera {
     }
 
     public Matrix4f getViewingMatrix() {
-        Vector3f lookFrom = new Vector3f(0.0f,0.0f,5f);
+        Vector3f lookFrom = new Vector3f(0.0f,0.0f,100f);
         Vector3f cameraUp = new Vector3f(0.0f,1.0f,0.0f);
-        Vector3f lookAt = new Vector3f(0.0f,0.0f,0.0f);
+        Vector3f lookAt = new Vector3f(0.0f,0.0f,-1.0f);
         viewMatrix.identity();
         viewMatrix.lookAt(lookFrom, lookAt, cameraUp);
         return viewMatrix;

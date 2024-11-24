@@ -1,6 +1,6 @@
 package pkgSlUtils;
 
-import pkgSlRenderer.MSPingPong;
+import pkgMinesweeperBackend.MSPingPong;
 
 import static org.lwjgl.glfw.GLFW.*;
 

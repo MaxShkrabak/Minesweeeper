@@ -1,4 +1,4 @@
-package pkgSlRenderer;
+package pkgMinesweeperBackend;
 
 import java.util.Random;
 

@@ -2,6 +2,7 @@ package pkgSlRenderer;
 
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
+import pkgMinesweeperBackend.MSPingPong;
 import pkgSlUtils.MSKeyListener;
 
 import java.nio.IntBuffer;

@@ -3,6 +3,8 @@ package pkgSlRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import static pkgDriver.MSSpot.*;
+
 public class MSCamera {
     private Matrix4f projectionMatrix, viewMatrix;
 
@@ -11,7 +13,7 @@ public class MSCamera {
         viewMatrix = new Matrix4f();
 
         projectionMatrix.identity();
-        projectionMatrix.ortho(-1f,1f,-1f,1f,0.0f,100f);
+        projectionMatrix.ortho(FRUSTUM_LEFT,FRUSTUM_RIGHT,FRUSTUM_BOTTOM,FRUSTUM_TOP,Z_NEAR,Z_FAR);
     }
 
     public Matrix4f getViewingMatrix() {

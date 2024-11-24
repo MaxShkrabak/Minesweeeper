@@ -38,7 +38,7 @@ public class MSPolygonRenderer extends MSRenderEngine {
 
     // Method used to render 'grid' of polygons based on rows and cols
     private void renderPolygons(int rows, int cols) {
-        Vector4f COLOR_FACTOR = new Vector4f(0.7f, 0.2f, 0.1f,1.0f);
+        Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.7f,1.0f);
         MSCamera my_cam = new MSCamera();
 
         while (!my_wm.isGlfwWindowClosed()) {

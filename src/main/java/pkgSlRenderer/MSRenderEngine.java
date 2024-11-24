@@ -2,6 +2,7 @@ package pkgSlRenderer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
+import pkgDriver.MSSpot;
 import pkgSlUtils.MSWindowManager;
 
 import java.nio.FloatBuffer;
@@ -39,7 +40,7 @@ public abstract class MSRenderEngine {
         float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 0.0f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
-        float[] mv = new float[rows * cols * FLOAT_PER_SQUARE];
+        float[] mv = generateVertices(rows, cols);
 
         FloatBuffer fb = BufferUtils.createFloatBuffer(mv.length);
         fb.put(mv).flip();
@@ -53,7 +54,7 @@ public abstract class MSRenderEngine {
 
         int posStride = 3;
         int textStride = 2;
-        int vertexStride = posStride + textStride;
+        int vertexStride = (posStride + textStride) * Float.BYTES;
         int index0 = 0, index1 = 1, startIndex = 0;
 
         glVertexAttribPointer(index0, posStride, GL_FLOAT, false, vertexStride, startIndex);
@@ -68,5 +69,55 @@ public abstract class MSRenderEngine {
         shaderObj0.set_shader_program();
     }
 
+    private float[] generateVertices(int rows, int cols) {
+        int totalTiles = rows * cols;
+        float[] vertices = new float[totalTiles * VPT * FLOAT_PER_SQUARE];
+
+        float padding = MSSpot.POLY_PADDING;
+        float offset = MSSpot.POLY_OFFSET;
+        float height = MSSpot.WIN_HEIGHT;
+        float width = MSSpot.WIN_WIDTH;
+
+        float tileSize = Math.min(height / rows, width / cols);
+        float z = 0.0f;
+
+        int index = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                float x = col * (tileSize + padding) + offset;
+                float y = row * (tileSize + padding) + offset;
+
+                // Bottom left
+                vertices[index++] = x;
+                vertices[index++] = y;
+                vertices[index++] = z;
+                vertices[index++] = 0.0f;     // Texture x
+                vertices[index++] = 0.0f;     // Texture y
+
+                // Bottom right
+                vertices[index++] = x + tileSize;
+                vertices[index++] = y;
+                vertices[index++] = z;
+                vertices[index++] = 1.0f;
+                vertices[index++] = 0.0f;
+
+                // Top right
+                vertices[index++] = x + tileSize;
+                vertices[index++] = y + tileSize;
+                vertices[index++] = z;
+                vertices[index++] = 1.0f;
+                vertices[index++] = 1.0f;
+
+                // Top left
+                vertices[index++] = x;
+                vertices[index++] = y + tileSize;
+                vertices[index++] = z;
+                vertices[index++] = 0.0f;
+                vertices[index++] = 1.0f;
+
+            }
+        }
+        return vertices;
+    }
     public abstract void render();
 }

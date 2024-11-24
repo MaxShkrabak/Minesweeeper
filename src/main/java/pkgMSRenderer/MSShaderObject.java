@@ -1,4 +1,4 @@
-package pkgSlRenderer;
+package pkgMSRenderer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector4f;

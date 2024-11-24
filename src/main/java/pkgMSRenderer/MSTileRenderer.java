@@ -1,4 +1,4 @@
-package pkgSlRenderer;
+package pkgMSRenderer;
 
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;

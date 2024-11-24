@@ -1,8 +1,8 @@
-package pkgSlRenderer;
+package pkgMSRenderer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
-import pkgDriver.MSSpot;
+import pkgMinesweeperBackend.MSSpot;
 import pkgSlUtils.MSWindowManager;
 
 import java.nio.FloatBuffer;

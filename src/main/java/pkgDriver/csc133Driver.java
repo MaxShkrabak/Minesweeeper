@@ -1,9 +1,9 @@
 package pkgDriver;
 
-import pkgSlRenderer.MSTileRenderer;
-import pkgSlRenderer.MSRenderEngine;
+import pkgMSRenderer.MSTileRenderer;
+import pkgMSRenderer.MSRenderEngine;
 
-import static pkgDriver.MSSpot.*;
+import static pkgMinesweeperBackend.MSSpot.*;
 
 import pkgSlUtils.MSWindowManager;
 

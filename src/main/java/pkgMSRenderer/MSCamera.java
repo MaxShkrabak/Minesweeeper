@@ -1,9 +1,9 @@
-package pkgSlRenderer;
+package pkgMSRenderer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import static pkgDriver.MSSpot.*;
+import static pkgMinesweeperBackend.MSSpot.*;
 
 public class MSCamera {
     private final Matrix4f projectionMatrix, viewMatrix;

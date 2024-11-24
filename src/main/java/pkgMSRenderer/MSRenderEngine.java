@@ -68,7 +68,6 @@ public abstract class MSRenderEngine {
         shaderObj0.set_shader_program();
 
         texObj0 = new MSTextureObject("assets/images/MarioWithGun.PNG");
-        texObj0.bind_texture();
     }
 
     // Method to generate tile vertices starting from bottom left of window

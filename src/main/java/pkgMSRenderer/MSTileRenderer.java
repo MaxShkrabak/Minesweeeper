@@ -54,6 +54,7 @@ public class MSTileRenderer extends MSRenderEngine {
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
                     shaderObj0.loadVector4f("COLOR_FACTOR", COLOR_FACTOR);
+                    texObj0.bind_texture();
                     renderTile(row,col);
                 }
             }

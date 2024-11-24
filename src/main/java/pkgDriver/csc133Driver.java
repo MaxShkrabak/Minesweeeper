@@ -13,6 +13,7 @@ public class csc133Driver {
         final int FRAME_DELAY = 300;
         MSRenderEngine my_re = new MSPolygonRenderer();
         MSWindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, WINDOW_TITLE);
+        System.out.println(WIN_WIDTH + " x " + WIN_HEIGHT);
         my_re.initOpenGL(MSWindowManager.get(), FRAME_DELAY, NUM_POLY_ROWS, NUM_POLY_COLS);
 
         my_re.render();

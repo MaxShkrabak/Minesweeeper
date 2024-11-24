@@ -3,7 +3,7 @@ package pkgDriver;
 public class MSSpot {
     public static String WINDOW_TITLE = "CSC 133: Shaders";
     public static int POLY_OFFSET = 10, POLYGON_LENGTH = 80, POLY_PADDING = 4;
-    public static int NUM_POLY_ROWS = 9, NUM_POLY_COLS = 9;
+    public static int NUM_POLY_ROWS = 7, NUM_POLY_COLS = 9;
 
     public static int WIN_WIDTH =
             2*POLY_OFFSET + (NUM_POLY_COLS-1)*POLY_PADDING + NUM_POLY_COLS*POLYGON_LENGTH;

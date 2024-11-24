@@ -42,6 +42,8 @@ public abstract class MSRenderEngine {
 
         float[] mv = generateVertices(rows, cols);
 
+        for (int i = 0; i < mv.length; i++) { System.out.print(mv[i] + " "); }
+
         FloatBuffer fb = BufferUtils.createFloatBuffer(mv.length);
         fb.put(mv).flip();
 
@@ -75,8 +77,8 @@ public abstract class MSRenderEngine {
 
         float padding = MSSpot.POLY_PADDING;
         float offset = MSSpot.POLY_OFFSET;
-        float height = MSSpot.WIN_HEIGHT;
-        float width = MSSpot.WIN_WIDTH;
+        float height = MSSpot.WIN_HEIGHT - 2 * offset - (rows - 1) * padding;
+        float width = MSSpot.WIN_WIDTH - 2 * offset - (cols - 1) * padding;
 
         float tileSize = Math.min(height / rows, width / cols);
         float z = 0.0f;

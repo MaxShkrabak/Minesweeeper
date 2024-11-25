@@ -13,7 +13,7 @@ public class MSCamera {
         viewMatrix = new Matrix4f();
 
         projectionMatrix.identity();
-        projectionMatrix.ortho(FRUSTUM_LEFT,FRUSTUM_RIGHT,FRUSTUM_BOTTOM,FRUSTUM_TOP,Z_NEAR,Z_FAR);
+        projectionMatrix.ortho(FRUSTUM_LEFT,FRUSTUM_RIGHT,FRUSTUM_TOP,FRUSTUM_BOTTOM,Z_NEAR,Z_FAR);
     }
 
     public Matrix4f getViewingMatrix() {

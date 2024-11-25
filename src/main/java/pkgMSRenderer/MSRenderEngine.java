@@ -93,29 +93,29 @@ public abstract class MSRenderEngine {
                 vertices[index++] = x;
                 vertices[index++] = y;
                 vertices[index++] = z;
-                vertices[index++] = 1.0f;     // Texture x
-                vertices[index++] = 1.0f;     // Texture y
+                vertices[index++] = 0.0f;     // Texture x
+                vertices[index++] = 0.0f;     // Texture y
 
                 // Bottom right
                 vertices[index++] = x + tileSize;
                 vertices[index++] = y;
                 vertices[index++] = z;
-                vertices[index++] = 0.0f;
                 vertices[index++] = 1.0f;
+                vertices[index++] = 0.0f;
 
                 // Top right
                 vertices[index++] = x + tileSize;
                 vertices[index++] = y + tileSize;
                 vertices[index++] = z;
-                vertices[index++] = 0.0f;
-                vertices[index++] = 0.0f;
+                vertices[index++] = 1.0f;
+                vertices[index++] = 1.0f;
 
                 // Top left
                 vertices[index++] = x;
                 vertices[index++] = y + tileSize;
                 vertices[index++] = z;
-                vertices[index++] = 1.0f;
                 vertices[index++] = 0.0f;
+                vertices[index++] = 1.0f;
 
             }
         }

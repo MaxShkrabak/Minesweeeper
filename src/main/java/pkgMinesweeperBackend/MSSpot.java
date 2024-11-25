@@ -3,8 +3,8 @@ package pkgMinesweeperBackend;
 public class MSSpot {
     public static String WINDOW_TITLE = "CSC 133: Minesweeper";
     // Use LOWER length the more rows and cols being generated
-    public static int POLY_OFFSET = 4, POLYGON_LENGTH = 200, POLY_PADDING = 4;
-    public static int NUM_POLY_ROWS = 3, NUM_POLY_COLS = 3;
+    public static int POLY_OFFSET = 4, POLYGON_LENGTH = 80, POLY_PADDING = 4;
+    public static int NUM_POLY_ROWS = 9, NUM_POLY_COLS = 7;
 
     public enum TILE_STATUS {NOT_EXPOSED, EXPOSED};
     public enum TILE_TYPE {MINE,GOLD}

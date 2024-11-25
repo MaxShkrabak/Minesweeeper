@@ -53,20 +53,13 @@ public class MSWindowManager {
 
         glfwMakeContextCurrent(win_id);
         glfwSetKeyCallback(win_id, MSKeyListener::keyCallback);
+        glfwSetMouseButtonCallback(win_id, MSMouseListener::mouseButtonCallback);
+        glfwSetCursorPosCallback(win_id, MSMouseListener::mousePosCallback);
 
         return win_id;
     }
 
     public void updateContextToThis() {
         glfwMakeContextCurrent(win_id);
-    }
-
-    public int[] getWindowSize() {
-        int[] width = new int[1];
-        int[] height = new int[1];
-
-        glfwGetWindowSize(win_id, width, height);
-
-        return new int[]{width[0], height[0]};
     }
 }

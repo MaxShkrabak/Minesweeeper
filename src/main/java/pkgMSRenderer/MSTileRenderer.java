@@ -3,7 +3,9 @@ package pkgMSRenderer;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import pkgMinesweeperBackend.MSPingPong;
+import pkgMinesweeperBackend.MSSpot;
 import pkgSlUtils.MSKeyListener;
+import pkgSlUtils.MSMouseListener;
 
 import java.nio.IntBuffer;
 
@@ -58,6 +60,7 @@ public class MSTileRenderer extends MSRenderEngine {
                     renderTile(row,col);
                 }
             }
+            mouseClick();
             my_wm.swapBuffers();
         }
     }
@@ -78,5 +81,15 @@ public class MSTileRenderer extends MSRenderEngine {
 
     private int getVAVIndex(int row, int col) {
         return (row * cols + col) * VPT;
+    }
+
+    // Method to display where mouse is being clicked on window
+    public void mouseClick() {
+        if (MSMouseListener.mouseButtonDown(0)) {
+            float xm = MSMouseListener.getX();
+            float ym = MSMouseListener.getY();
+            ym = MSSpot.WIN_HEIGHT - ym;      // Invert y-axis since origin is bottom left
+            System.out.println(xm + " " + ym);
+        }
     }
 }

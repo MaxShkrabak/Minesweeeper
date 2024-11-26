@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15C.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static pkgMinesweeperBackend.MSSpot.*;
 
 public class MSTileRenderer extends MSRenderEngine {
 
@@ -42,7 +43,7 @@ public class MSTileRenderer extends MSRenderEngine {
     private void renderTiles(int rows, int cols) {
         Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.7f,1.0f); // Color of tiles
         MSCamera my_cam = new MSCamera();
-
+        boolean[][] currTile = new boolean[rows][cols];
         while (!my_wm.isGlfwWindowClosed()) {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
@@ -55,12 +56,28 @@ public class MSTileRenderer extends MSRenderEngine {
 
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
+
+                    // If a tile is clicked prints the tile location and sets currTile to true
+                    if (tileIsClicked(row, col)) {
+                        if (!currTile[row][col]) {
+                            System.out.println("Mouse clicked at: (" + row + ", " + col + ")");
+                        }
+                        currTile[row][col] = true;
+                    }
+
+                    // If tile was clicked it will unbind texture
+                    if (currTile[row][col]) {
+                        texObj0.unbind_texture();
+                    } else {
+                        texObj0.bind_texture();
+                    }
+
+
+
                     shaderObj0.loadVector4f("COLOR_FACTOR", COLOR_FACTOR);
-                    texObj0.bind_texture();
                     renderTile(row,col);
                 }
             }
-            mouseClick();
             my_wm.swapBuffers();
         }
     }
@@ -83,13 +100,21 @@ public class MSTileRenderer extends MSRenderEngine {
         return (row * cols + col) * VPT;
     }
 
-    // Method to display where mouse is being clicked on window
-    public void mouseClick() {
-        if (MSMouseListener.mouseButtonDown(0)) {
-            float xm = MSMouseListener.getX();
-            float ym = MSMouseListener.getY();
-            ym = MSSpot.WIN_HEIGHT - ym;      // Invert y-axis since origin is bottom left
-            System.out.println(xm + " " + ym);
-        }
+    // TODO: Need to fix issue with wrong tile coordinate being changed
+    // Method to check if a tile was clicked
+    public boolean tileIsClicked(int row, int col) {
+        float xm = MSMouseListener.getX();
+        float ym = MSMouseListener.getY();
+
+        ym = MSSpot.WIN_HEIGHT - ym;      // Invert y-axis since origin is bottom left
+
+        float xMin = POLY_OFFSET + col * (POLYGON_LENGTH + POLY_PADDING);
+        float xMax = xMin + POLYGON_LENGTH;
+
+        float yMin = POLY_OFFSET + row * (POLYGON_LENGTH + POLY_PADDING);
+        float yMax = yMin + POLYGON_LENGTH;
+
+        // Checks if click was within a tile
+        return MSMouseListener.mouseButtonDown(0) && xm >= xMin && xm <= xMax && ym >= yMin && ym <= yMax;
     }
 }

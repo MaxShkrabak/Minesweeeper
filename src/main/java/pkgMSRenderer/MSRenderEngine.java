@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL11C.glClearColor;
 import static org.lwjgl.opengl.GL15C.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static pkgMinesweeperBackend.MSSpot.*;
 
 public abstract class MSRenderEngine {
     protected static final int FLOAT_PER_SQUARE = 5;
@@ -75,10 +76,8 @@ public abstract class MSRenderEngine {
         int totalTiles = rows * cols;
         float[] vertices = new float[totalTiles * VPT * FLOAT_PER_SQUARE];
 
-        float padding = MSSpot.POLY_PADDING;
-        float offset = MSSpot.POLY_OFFSET;
-        float height = MSSpot.WIN_HEIGHT - 2 * offset - (rows - 1) * padding;
-        float width = MSSpot.WIN_WIDTH - 2 * offset - (cols - 1) * padding;
+        float height = WIN_HEIGHT - 2 * POLY_OFFSET - (rows - 1) * POLY_PADDING;
+        float width = WIN_WIDTH - 2 * POLY_OFFSET - (cols - 1) * POLY_PADDING;
 
         float tileSize = Math.min(height / rows, width / cols);
         float z = 0.0f;
@@ -86,8 +85,8 @@ public abstract class MSRenderEngine {
         int index = 0;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                float x = col * (tileSize + padding) + offset;
-                float y = row * (tileSize + padding) + offset;
+                float x = col * (tileSize + POLY_PADDING) + POLY_OFFSET;
+                float y = row * (tileSize + POLY_PADDING) + POLY_OFFSET;
 
                 // Bottom left
                 vertices[index++] = x;

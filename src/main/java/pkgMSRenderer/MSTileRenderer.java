@@ -100,7 +100,6 @@ public class MSTileRenderer extends MSRenderEngine {
         return (row * cols + col) * VPT;
     }
 
-    // TODO: Need to fix issue with wrong tile coordinate being changed
     // Method to check if a tile was clicked
     public boolean tileIsClicked(int row, int col) {
         float xm = MSMouseListener.getX();
@@ -111,6 +110,7 @@ public class MSTileRenderer extends MSRenderEngine {
         float xMin = POLY_OFFSET + col * (POLYGON_LENGTH + POLY_PADDING);
         float xMax = xMin + POLYGON_LENGTH;
 
+        row = (rows - 1) - row;  // Flips the rows
         float yMin = POLY_OFFSET + row * (POLYGON_LENGTH + POLY_PADDING);
         float yMax = yMin + POLYGON_LENGTH;
 

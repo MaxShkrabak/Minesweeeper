@@ -1,8 +1,5 @@
 package pkgMSRenderer;
-/*
-TODO:
-Make this a generic class with separate init_texture() for 2D textures.
-*/
+
 import org.lwjgl.BufferUtils;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

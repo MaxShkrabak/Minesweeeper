@@ -2,6 +2,7 @@ package pkgMSRenderer;
 
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
+import pkgMinesweeperBackend.MSMineBoard;
 import pkgMinesweeperBackend.MSPingPong;
 import pkgMinesweeperBackend.MSSpot;
 import pkgSlUtils.MSKeyListener;
@@ -29,7 +30,8 @@ public class MSTileRenderer extends MSRenderEngine {
     public void render() {
         MSPingPong myPingPong = new MSPingPong(rows, cols);
         MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
-
+        MSMineBoard my_board = new MSMineBoard(rows, cols);
+        my_board.printBoard();
         MSKeyListener.commandMenu(); // Display commands from keyListener
 
         // Gets the passed in frame delay and sends it to keyListener

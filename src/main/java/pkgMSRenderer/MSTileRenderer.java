@@ -67,9 +67,9 @@ public class MSTileRenderer extends MSRenderEngine {
 
                     // If tile was clicked it will unbind texture
                     if (currTile[row][col]) {
-                        texObj0.unbind_texture();
+                        texture_array[0].unbind_texture();
                     } else {
-                        texObj0.bind_texture();
+                        texture_array[0].bind_texture();
                     }
 
 

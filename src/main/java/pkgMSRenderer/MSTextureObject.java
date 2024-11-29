@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL11C.*;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
-class MSTextureObject {
+public class MSTextureObject {
     private String texFilepath;
     private int texID;
     ByteBuffer texImage = null;

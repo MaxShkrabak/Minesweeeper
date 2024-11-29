@@ -25,7 +25,7 @@ public abstract class MSRenderEngine {
 
     protected MSWindowManager my_wm;
     protected MSShaderObject shaderObj0;
-    protected MSTextureObject texObj0;
+    protected MSTextureObject[] texture_array = new MSTextureObject[3];
 
     public void initOpenGL(MSWindowManager wm, int frameD, int row, int col) {
         my_wm = wm;
@@ -68,7 +68,9 @@ public abstract class MSRenderEngine {
         shaderObj0.compile_shader();
         shaderObj0.set_shader_program();
 
-        texObj0 = new MSTextureObject("assets/images/MarioWithGun.PNG");
+        texture_array[0] = new MSTextureObject("assets/images/Pikachu1.PNG");
+        texture_array[1] = new MSTextureObject("assets/images/MarioWithGun.PNG");
+        texture_array[2] = new MSTextureObject("assets/images/Lock.PNG");
     }
 
     // Method to generate tile vertices starting from bottom left of window

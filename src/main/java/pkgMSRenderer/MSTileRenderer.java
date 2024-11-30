@@ -32,7 +32,8 @@ public class MSTileRenderer extends MSRenderEngine {
         MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
         MSMineBoard my_board = new MSMineBoard(rows, cols);
         my_board.printBoard();
-        MSKeyListener.commandMenu(); // Display commands from keyListener
+        my_board.printTileScores();
+
 
         // Gets the passed in frame delay and sends it to keyListener
         MSKeyListener.initFrameDelay(frameDelay);

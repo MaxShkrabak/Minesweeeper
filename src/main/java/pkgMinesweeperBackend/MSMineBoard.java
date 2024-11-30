@@ -14,6 +14,8 @@ public class MSMineBoard {
         ROWS = rows;
         COLS = cols;
         board = new CellData[rows][cols];
+        int goldScore = 40;
+        int mineScore = 0;
 
         // All tiles will start as gold and not exposed
         for (int row = 0; row < rows; row++) {
@@ -21,6 +23,7 @@ public class MSMineBoard {
                 board[row][col] = new CellData();
                 board[row][col].status = MSSpot.TILE_STATUS.NOT_EXPOSED;
                 board[row][col].type = MSSpot.TILE_TYPE.GOLD;
+                board[row][col].tile_score = goldScore;
             }
         }
 
@@ -33,10 +36,11 @@ public class MSMineBoard {
 
             if (board[row][col].type != MSSpot.TILE_TYPE.MINE) {
                 board[row][col].type = MSSpot.TILE_TYPE.MINE;
+                board[row][col].tile_score = mineScore;
                 mineCount++;
             }
         }
-
+        countNNN();
         gameActive = true;
     }
 
@@ -51,6 +55,7 @@ public class MSMineBoard {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public boolean isGameActive() {
@@ -58,11 +63,16 @@ public class MSMineBoard {
     }
 
     public void printTileScores() {
-
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                System.out.printf("%2d ", board[row][col].tile_score);
+            }
+            System.out.println();
+        }
     }
 
     public MSSpot.TILE_STATUS getTileStatus(int row, int col) {
-        return null;
+        return board[row][col].status;
     }
 
     public MSSpot.TILE_TYPE changeTileStatus(int row, int col) {
@@ -70,14 +80,47 @@ public class MSMineBoard {
     }
 
     public MSSpot.TILE_TYPE getTileType(int row, int col) {
-        return null;
+        return board[row][col].type;
     }
 
     public int getCurrentScore() {
         return current_score;
     }
 
-    private static class CellData {
+    // Count the Next Nearest Neighbors of a tile
+    public void countNNN() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                // Skip over mines they are always 0
+                if (getTileType(i, j) == MSSpot.TILE_TYPE.MINE) {
+                    continue;
+                }
+
+                MSSpot.TILE_TYPE mine = MSSpot.TILE_TYPE.MINE;
+                int numMines = 0;
+                int prevC = (COLS + j - 1) % COLS;
+                int nextC = (j + 1) % COLS;
+                int nextR = (i + 1) % ROWS;
+                int prevR = (ROWS + i - 1) % ROWS;
+
+                numMines += getTileType(i, prevC) == mine ? 1 : 0;
+                numMines += getTileType(prevR, j) == mine ? 1 : 0;
+                numMines += getTileType(i, nextC) == mine ? 1 : 0;
+                numMines += getTileType(nextR, j) == mine ? 1 : 0;
+
+                numMines += getTileType(nextR, prevC) == mine ? 1 : 0;
+                numMines += getTileType(nextR, nextC) == mine ? 1 : 0;
+                numMines += getTileType(prevR, nextC) == mine ? 1 : 0;
+                numMines += getTileType(prevR, prevC) == mine ? 1 : 0;
+
+                int nnn_tiles = 8; // There are 8 surrounding tiles
+                int numGold = nnn_tiles - numMines;  // This will give total gold tiles surrounding the cell
+                board[i][j].tile_score = (10 * numMines) + (5 * numGold); // Sets the new score
+            }
+        }
+    }
+
+    public class CellData {
         private MSSpot.TILE_STATUS status;
         private MSSpot.TILE_TYPE type;
         private int tile_score;

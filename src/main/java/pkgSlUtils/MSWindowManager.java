@@ -52,7 +52,6 @@ public class MSWindowManager {
         }
 
         glfwMakeContextCurrent(win_id);
-        glfwSetKeyCallback(win_id, MSKeyListener::keyCallback);
         glfwSetMouseButtonCallback(win_id, MSMouseListener::mouseButtonCallback);
         glfwSetCursorPosCallback(win_id, MSMouseListener::mousePosCallback);
 

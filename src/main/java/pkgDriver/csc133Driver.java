@@ -14,7 +14,6 @@ public class csc133Driver {
         MSRenderEngine my_re = new MSTileRenderer();
         MSWindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, WINDOW_TITLE);
         my_re.initOpenGL(MSWindowManager.get(), FRAME_DELAY, NUM_POLY_ROWS, NUM_POLY_COLS);
-        //System.out.println(WIN_WIDTH + " x " + WIN_HEIGHT);
 
         my_re.render();
     }  //  public static void main(String[] my_args)

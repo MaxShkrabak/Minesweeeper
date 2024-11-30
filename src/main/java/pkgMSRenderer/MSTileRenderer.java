@@ -3,9 +3,7 @@ package pkgMSRenderer;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 import pkgMinesweeperBackend.MSMineBoard;
-import pkgMinesweeperBackend.MSPingPong;
 import pkgMinesweeperBackend.MSSpot;
-import pkgSlUtils.MSKeyListener;
 import pkgSlUtils.MSMouseListener;
 
 import java.nio.IntBuffer;
@@ -29,14 +27,9 @@ public class MSTileRenderer extends MSRenderEngine {
 
     @Override
     public void render() {
-        MSPingPong myPingPong = new MSPingPong(rows, cols);
-        MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
         my_board = new MSMineBoard(rows, cols);
         my_board.printBoard();
         my_board.printTileScores();
-
-        // Gets the passed in frame delay and sends it to keyListener
-        MSKeyListener.initFrameDelay(frameDelay);
 
         renderTiles(rows, cols);
         my_wm.destroyGlfwWindow();
@@ -64,7 +57,7 @@ public class MSTileRenderer extends MSRenderEngine {
                     }
 
                     if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
-                        texture_array[2].bind_texture(); //
+                        texture_array[2].bind_texture();
                     } else if (my_board.getTileType(row, col) == TILE_TYPE.MINE) {
                         texture_array[1].bind_texture();
                     } else {
@@ -75,6 +68,7 @@ public class MSTileRenderer extends MSRenderEngine {
                     renderTile(row, col);
                 }
             }
+
             my_wm.swapBuffers();
         }
     }

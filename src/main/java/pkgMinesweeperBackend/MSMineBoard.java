@@ -75,8 +75,9 @@ public class MSMineBoard {
         return board[row][col].status;
     }
 
-    public MSSpot.TILE_TYPE changeTileStatus(int row, int col) {
-        return null;
+    public void changeTileStatus(int row, int col) {
+        board[row][col].status = MSSpot.TILE_STATUS.EXPOSED;
+        current_score += board[row][col].tile_score;
     }
 
     public MSSpot.TILE_TYPE getTileType(int row, int col) {
@@ -120,7 +121,27 @@ public class MSMineBoard {
         }
     }
 
-    public class CellData {
+    public void clickedTileStatus(int row, int col) {
+        if (getTileStatus(row, col) == MSSpot.TILE_STATUS.NOT_EXPOSED) {
+            if (getTileType(row, col) == MSSpot.TILE_TYPE.GOLD) {
+                changeTileStatus(row, col);
+            } else {
+                revealBoard();
+                gameActive = false;
+            }
+            System.out.printf("Mouse Clicked: (%d, %d)\t score: %d\n", row, col, getCurrentScore());  // Prints which tile was clicked
+        }
+    }
+
+    private void revealBoard() {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                board[row][col].status = MSSpot.TILE_STATUS.EXPOSED;
+            }
+        }
+    }
+
+    private static class CellData {
         private MSSpot.TILE_STATUS status;
         private MSSpot.TILE_TYPE type;
         private int tile_score;

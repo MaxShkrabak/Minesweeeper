@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static pkgMinesweeperBackend.MSSpot.*;
 
 public class MSTileRenderer extends MSRenderEngine {
+    private MSMineBoard my_board;
 
     // Constructor
     public MSTileRenderer() {
@@ -30,10 +31,9 @@ public class MSTileRenderer extends MSRenderEngine {
     public void render() {
         MSPingPong myPingPong = new MSPingPong(rows, cols);
         MSKeyListener.setPPInstance(myPingPong); // Set instance of pingPong in keyListener
-        MSMineBoard my_board = new MSMineBoard(rows, cols);
+        my_board = new MSMineBoard(rows, cols);
         my_board.printBoard();
         my_board.printTileScores();
-
 
         // Gets the passed in frame delay and sends it to keyListener
         MSKeyListener.initFrameDelay(frameDelay);
@@ -59,26 +59,20 @@ public class MSTileRenderer extends MSRenderEngine {
 
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
-
-                    // If a tile is clicked prints the tile location and sets currTile to true
-                    if (tileIsClicked(row, col)) {
-                        if (!currTile[row][col]) {
-                            System.out.println("Mouse clicked at: (" + row + ", " + col + ")");
-                        }
-                        currTile[row][col] = true;
+                    if (tileIsClicked(row, col) && my_board.isGameActive()) {
+                        my_board.clickedTileStatus(row, col);
                     }
 
-                    // If tile was clicked it will unbind texture
-                    if (currTile[row][col]) {
-                        texture_array[0].unbind_texture();
+                    if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
+                        texture_array[2].bind_texture(); //
+                    } else if (my_board.getTileType(row, col) == TILE_TYPE.MINE) {
+                        texture_array[1].bind_texture();
                     } else {
                         texture_array[0].bind_texture();
                     }
 
-
-
                     shaderObj0.loadVector4f("COLOR_FACTOR", COLOR_FACTOR);
-                    renderTile(row,col);
+                    renderTile(row, col);
                 }
             }
             my_wm.swapBuffers();
@@ -104,7 +98,7 @@ public class MSTileRenderer extends MSRenderEngine {
     }
 
     // Method to check if a tile was clicked
-    public boolean tileIsClicked(int row, int col) {
+    private boolean tileIsClicked(int row, int col) {
         float xm = MSMouseListener.getX();
         float ym = MSMouseListener.getY();
 

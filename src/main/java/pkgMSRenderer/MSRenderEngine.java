@@ -19,17 +19,15 @@ public abstract class MSRenderEngine {
     protected static final int VPT = 4;
 
     protected int vaoID, vboID;
-    protected int frameDelay;
     protected int rows, cols;
 
     protected MSWindowManager my_wm;
     protected MSShaderObject shaderObj0;
     protected MSTextureObject[] texture_array = new MSTextureObject[3];
 
-    public void initOpenGL(MSWindowManager wm, int frameD, int row, int col) {
+    public void initOpenGL(MSWindowManager wm, int row, int col) {
         my_wm = wm;
         my_wm.updateContextToThis();
-        frameDelay = frameD;
         rows = row;
         cols = col;
 

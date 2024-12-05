@@ -2,7 +2,6 @@ package pkgMSRenderer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
-import pkgMinesweeperBackend.MSSpot;
 import pkgSlUtils.MSWindowManager;
 
 import java.nio.FloatBuffer;
@@ -35,7 +34,7 @@ public abstract class MSRenderEngine {
         cols = col;
 
         GL.createCapabilities();
-        float CC_RED = 0.0f, CC_GREEN = 0.2f, CC_BLUE = 0.2f, CC_ALPHA = 1.0f; // Window background color (BLACK)
+        float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 0.0f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
         float[] mv = generateVertices(rows, cols);
@@ -68,9 +67,9 @@ public abstract class MSRenderEngine {
         shaderObj0.compile_shader();
         shaderObj0.set_shader_program();
 
-        texture_array[0] = new MSTextureObject("assets/images/Pikachu1.PNG");
-        texture_array[1] = new MSTextureObject("assets/images/MarioWithGun.PNG");
-        texture_array[2] = new MSTextureObject("assets/images/Lock.PNG");
+        texture_array[0] = new MSTextureObject("assets/images/ShiningDiamond_2.PNG"); // Gold
+        texture_array[1] = new MSTextureObject("assets/images/MineBomb_2.PNG");       // Mine
+        texture_array[2] = new MSTextureObject("assets/images/MysteryBox_2.PNG");     // Default
     }
 
     // Method to generate tile vertices starting from bottom left of window

@@ -37,9 +37,9 @@ public class MSTileRenderer extends MSRenderEngine {
 
     // Method used to render 'grid' of square tiles
     private void renderTiles(int rows, int cols) {
-        Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.7f,1.0f); // Color of tiles
+        Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.9f,1.0f); // Color of tiles
         MSCamera my_cam = new MSCamera();
-        boolean[][] currTile = new boolean[rows][cols];
+
         while (!my_wm.isGlfwWindowClosed()) {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
@@ -68,7 +68,6 @@ public class MSTileRenderer extends MSRenderEngine {
                     renderTile(row, col);
                 }
             }
-
             my_wm.swapBuffers();
         }
     }

@@ -1,5 +1,6 @@
 package pkgMinesweeperBackend;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MSMineBoard {
@@ -27,19 +28,27 @@ public class MSMineBoard {
             }
         }
 
-        // Randomly place 14 mines
-        Random rand = new Random();
-        int mineCount = 0;
-        while (mineCount < NUM_MINES) {
-            int row = rand.nextInt(ROWS);
-            int col = rand.nextInt(COLS);
-
-            if (board[row][col].type != MSSpot.TILE_TYPE.MINE) {
-                board[row][col].type = MSSpot.TILE_TYPE.MINE;
-                board[row][col].tile_score = mineScore;
-                mineCount++;
+        // Stores all available coordinates in an ArrayList
+        ArrayList<int[]> coordinates = new ArrayList<>();
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                coordinates.add(new int[]{row, col});
             }
         }
+
+        // Get random coordinates for mines
+        Random rand = new Random();
+        for (int i = 0; i < NUM_MINES; i++) {
+            int randIndex = rand.nextInt(coordinates.size()); // Gets random index 0 to arrayList size
+            int[] coord = coordinates.get(randIndex);
+            coordinates.remove(randIndex);     // Remove that coordinate so that it can't be picked again
+            int row = coord[0];
+            int col = coord[1];
+
+            board[row][col].type = MSSpot.TILE_TYPE.MINE;
+            board[row][col].tile_score = mineScore;
+        }
+
         countNNN();
         gameActive = true;
     }

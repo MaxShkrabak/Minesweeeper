@@ -1,4 +1,4 @@
-package pkgMSRenderer;
+package pkgRenderer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class MSShaderObject {
+public class ShaderObject {
     private String vsFile, fsFile;
     private int programId;
-    public MSShaderObject(String vs, String fs) {
+    public ShaderObject(String vs, String fs) {
         try {
             vsFile = new String(Files.readAllBytes(Paths.get(vs)));
             fsFile = new String(Files.readAllBytes(Paths.get(fs)));

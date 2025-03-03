@@ -3,7 +3,7 @@ package pkgMinesweeperBackend;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MSMineBoard {
+public class MineBoard {
     private int current_score = 0;
     private final CellData[][] board;
     private boolean gameActive = false;
@@ -11,7 +11,7 @@ public class MSMineBoard {
     private static int COLS;
     private static final int NUM_MINES = 14;
 
-    public MSMineBoard(int rows, int cols) {
+    public MineBoard(int rows, int cols) {
         ROWS = rows;
         COLS = cols;
         board = new CellData[rows][cols];
@@ -22,8 +22,8 @@ public class MSMineBoard {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 board[row][col] = new CellData();
-                board[row][col].status = MSSpot.TILE_STATUS.NOT_EXPOSED;
-                board[row][col].type = MSSpot.TILE_TYPE.GOLD;
+                board[row][col].status = Spot.TILE_STATUS.NOT_EXPOSED;
+                board[row][col].type = Spot.TILE_TYPE.GOLD;
                 board[row][col].tile_score = goldScore;
             }
         }
@@ -45,7 +45,7 @@ public class MSMineBoard {
             int row = coord[0];
             int col = coord[1];
 
-            board[row][col].type = MSSpot.TILE_TYPE.MINE;
+            board[row][col].type = Spot.TILE_TYPE.MINE;
             board[row][col].tile_score = mineScore;
         }
 
@@ -56,7 +56,7 @@ public class MSMineBoard {
     public void printBoard() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                if (board[row][col].type == MSSpot.TILE_TYPE.GOLD) {
+                if (board[row][col].type == Spot.TILE_TYPE.GOLD) {
                     System.out.print("G ");
                 } else { // Mine
                     System.out.print("M ");
@@ -80,16 +80,16 @@ public class MSMineBoard {
         }
     }
 
-    public MSSpot.TILE_STATUS getTileStatus(int row, int col) {
+    public Spot.TILE_STATUS getTileStatus(int row, int col) {
         return board[row][col].status;
     }
 
     public void changeTileStatus(int row, int col) {
-        board[row][col].status = MSSpot.TILE_STATUS.EXPOSED;
+        board[row][col].status = Spot.TILE_STATUS.EXPOSED;
         current_score += board[row][col].tile_score;
     }
 
-    public MSSpot.TILE_TYPE getTileType(int row, int col) {
+    public Spot.TILE_TYPE getTileType(int row, int col) {
         return board[row][col].type;
     }
 
@@ -102,11 +102,11 @@ public class MSMineBoard {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 // Skip over mines they are always 0
-                if (getTileType(i, j) == MSSpot.TILE_TYPE.MINE) {
+                if (getTileType(i, j) == Spot.TILE_TYPE.MINE) {
                     continue;
                 }
 
-                MSSpot.TILE_TYPE mine = MSSpot.TILE_TYPE.MINE;
+                Spot.TILE_TYPE mine = Spot.TILE_TYPE.MINE;
                 int numMines = 0;
                 int prevC = (COLS + j - 1) % COLS;
                 int nextC = (j + 1) % COLS;
@@ -131,8 +131,8 @@ public class MSMineBoard {
     }
 
     public void clickedTileStatus(int row, int col) {
-        if (getTileStatus(row, col) == MSSpot.TILE_STATUS.NOT_EXPOSED) {
-            if (getTileType(row, col) == MSSpot.TILE_TYPE.GOLD) {
+        if (getTileStatus(row, col) == Spot.TILE_STATUS.NOT_EXPOSED) {
+            if (getTileType(row, col) == Spot.TILE_TYPE.GOLD) {
                 changeTileStatus(row, col);
             } else {
                 revealBoard();
@@ -145,14 +145,14 @@ public class MSMineBoard {
     private void revealBoard() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                board[row][col].status = MSSpot.TILE_STATUS.EXPOSED;
+                board[row][col].status = Spot.TILE_STATUS.EXPOSED;
             }
         }
     }
 
     private static class CellData {
-        private MSSpot.TILE_STATUS status;
-        private MSSpot.TILE_TYPE type;
+        private Spot.TILE_STATUS status;
+        private Spot.TILE_TYPE type;
         private int tile_score;
     }
 }

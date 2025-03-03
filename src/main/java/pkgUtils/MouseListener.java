@@ -1,16 +1,16 @@
-package pkgSlUtils;
+package pkgUtils;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-public class MSMouseListener {
-    private static MSMouseListener my_instance;
+public class MouseListener {
+    private static MouseListener my_instance;
     private double scrollX, scrollY;
     double xPos, yPos, lastY, lastX;
     private boolean mouseButtonPressed[] = new boolean[3];
     private boolean isDragging;
 
-    private MSMouseListener() {
+    private MouseListener() {
         this.scrollX = 0.0f;
         this.scrollY = 0.0f;
         this.xPos = 0.0f;
@@ -20,9 +20,9 @@ public class MSMouseListener {
         this.isDragging = false;
     }
 
-    public static MSMouseListener get() {
+    public static MouseListener get() {
         if (my_instance == null) {
-            my_instance = new MSMouseListener();
+            my_instance = new MouseListener();
         }
         return my_instance;
     }

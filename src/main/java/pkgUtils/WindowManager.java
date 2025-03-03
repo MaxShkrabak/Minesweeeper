@@ -1,19 +1,19 @@
-package pkgSlUtils;
+package pkgUtils;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class MSWindowManager {
+public class WindowManager {
 
     private static long win_id = 0;
-    private static MSWindowManager my_window = null;
+    private static WindowManager my_window = null;
 
-    private MSWindowManager() {}
+    private WindowManager() {}
 
-    public static MSWindowManager get() {
+    public static WindowManager get() {
         if (my_window == null) {
-            my_window = new MSWindowManager();
+            my_window = new WindowManager();
         }
         return my_window;
     }
@@ -34,6 +34,7 @@ public class MSWindowManager {
     }
 
     public long initGLFWWindow(int w, int h, String label) {
+        String gameIcon = "assets/icon/Mine.png";
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
@@ -51,9 +52,11 @@ public class MSWindowManager {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
+        Icon.setIcon(win_id, gameIcon);
+
         glfwMakeContextCurrent(win_id);
-        glfwSetMouseButtonCallback(win_id, MSMouseListener::mouseButtonCallback);
-        glfwSetCursorPosCallback(win_id, MSMouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(win_id, MouseListener::mouseButtonCallback);
+        glfwSetCursorPosCallback(win_id, MouseListener::mousePosCallback);
 
         return win_id;
     }

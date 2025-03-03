@@ -1,14 +1,14 @@
-package pkgMSRenderer;
+package pkgRenderer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import static pkgMinesweeperBackend.MSSpot.*;
+import static pkgMinesweeperBackend.Spot.*;
 
-public class MSCamera {
+public class Camera {
     private final Matrix4f projectionMatrix, viewMatrix;
 
-    public MSCamera() {
+    public Camera() {
         projectionMatrix = new Matrix4f();
         viewMatrix = new Matrix4f();
 

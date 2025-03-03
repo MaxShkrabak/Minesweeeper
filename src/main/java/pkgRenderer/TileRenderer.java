@@ -1,10 +1,10 @@
-package pkgMSRenderer;
+package pkgRenderer;
 
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
-import pkgMinesweeperBackend.MSMineBoard;
-import pkgMinesweeperBackend.MSSpot;
-import pkgSlUtils.MSMouseListener;
+import pkgMinesweeperBackend.MineBoard;
+import pkgMinesweeperBackend.Spot;
+import pkgUtils.MouseListener;
 
 import java.nio.IntBuffer;
 
@@ -16,18 +16,18 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15C.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static pkgMinesweeperBackend.MSSpot.*;
+import static pkgMinesweeperBackend.Spot.*;
 
-public class MSTileRenderer extends MSRenderEngine {
-    private MSMineBoard my_board;
+public class TileRenderer extends RenderEngine {
+    private MineBoard my_board;
 
     // Constructor
-    public MSTileRenderer() {
+    public TileRenderer() {
     }
 
     @Override
     public void render() {
-        my_board = new MSMineBoard(rows, cols);
+        my_board = new MineBoard(rows, cols);
         my_board.printBoard();
         my_board.printTileScores();
 
@@ -38,7 +38,7 @@ public class MSTileRenderer extends MSRenderEngine {
     // Method used to render 'grid' of square tiles
     private void renderTiles(int rows, int cols) {
         Vector4f COLOR_FACTOR = new Vector4f(0.4f, 0.1f, 0.9f,1.0f); // Color of tiles
-        MSCamera my_cam = new MSCamera();
+        Camera my_cam = new Camera();
 
         while (!my_wm.isGlfwWindowClosed()) {
             glfwPollEvents();
@@ -92,10 +92,10 @@ public class MSTileRenderer extends MSRenderEngine {
 
     // Method to check if a tile was clicked
     private boolean tileIsClicked(int row, int col) {
-        float xm = MSMouseListener.getX();
-        float ym = MSMouseListener.getY();
+        float xm = MouseListener.getX();
+        float ym = MouseListener.getY();
 
-        ym = MSSpot.WIN_HEIGHT - ym;      // Invert y-axis since origin is bottom left
+        ym = Spot.WIN_HEIGHT - ym;      // Invert y-axis since origin is bottom left
 
         float xMin = POLY_OFFSET + col * (POLYGON_LENGTH + POLY_PADDING);
         float xMax = xMin + POLYGON_LENGTH;
@@ -105,6 +105,6 @@ public class MSTileRenderer extends MSRenderEngine {
         float yMax = yMin + POLYGON_LENGTH;
 
         // Checks if click was within a tile
-        return MSMouseListener.mouseButtonDown(0) && xm >= xMin && xm <= xMax && ym >= yMin && ym <= yMax;
+        return MouseListener.mouseButtonDown(0) && xm >= xMin && xm <= xMax && ym >= yMin && ym <= yMax;
     }
 }

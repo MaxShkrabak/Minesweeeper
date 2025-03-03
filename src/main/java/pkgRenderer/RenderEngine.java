@@ -1,8 +1,8 @@
-package pkgMSRenderer;
+package pkgRenderer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
-import pkgSlUtils.MSWindowManager;
+import pkgUtils.WindowManager;
 
 import java.nio.FloatBuffer;
 
@@ -12,27 +12,27 @@ import static org.lwjgl.opengl.GL11C.glClearColor;
 import static org.lwjgl.opengl.GL15C.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static pkgMinesweeperBackend.MSSpot.*;
+import static pkgMinesweeperBackend.Spot.*;
 
-public abstract class MSRenderEngine {
+public abstract class RenderEngine {
     protected static final int FLOAT_PER_SQUARE = 5;
     protected static final int VPT = 4;
 
     protected int vaoID, vboID;
     protected int rows, cols;
 
-    protected MSWindowManager my_wm;
-    protected MSShaderObject shaderObj0;
-    protected MSTextureObject[] texture_array = new MSTextureObject[3];
+    protected WindowManager my_wm;
+    protected ShaderObject shaderObj0;
+    protected TextureObject[] texture_array = new TextureObject[3];
 
-    public void initOpenGL(MSWindowManager wm, int row, int col) {
+    public void initOpenGL(WindowManager wm, int row, int col) {
         my_wm = wm;
         my_wm.updateContextToThis();
         rows = row;
         cols = col;
 
         GL.createCapabilities();
-        float CC_RED = 0.0f, CC_GREEN = 0.0f, CC_BLUE = 0.0f, CC_ALPHA = 1.0f; // Window background color (BLACK)
+        float CC_RED = 0.4f, CC_GREEN = 0.4f, CC_BLUE = 0.4f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
         float[] mv = generateVertices(rows, cols);
@@ -61,13 +61,13 @@ public abstract class MSRenderEngine {
         glVertexAttribPointer(index1, textStride, GL_FLOAT, false, vertexStride, startIndex);
         glEnableVertexAttribArray(index1);
 
-        shaderObj0 = new MSShaderObject("assets/shaders/vs_texture_1.glsl", "assets/shaders/fs_texture_1.glsl");
+        shaderObj0 = new ShaderObject("assets/shaders/vs_texture_1.glsl", "assets/shaders/fs_texture_1.glsl");
         shaderObj0.compile_shader();
         shaderObj0.set_shader_program();
 
-        texture_array[0] = new MSTextureObject("assets/images/ShiningDiamond_2.PNG"); // Gold
-        texture_array[1] = new MSTextureObject("assets/images/MineBomb_2.PNG");       // Mine
-        texture_array[2] = new MSTextureObject("assets/images/MysteryBox_2.PNG");     // Default
+        texture_array[0] = new TextureObject("assets/images/One.png"); // Gold
+        texture_array[1] = new TextureObject("assets/images/GameMine.png");       // Mine
+        texture_array[2] = new TextureObject("assets/images/Default.PNG");     // Default
     }
 
     // Method to generate tile vertices starting from bottom left of window

@@ -1,4 +1,4 @@
-package pkgMSRenderer;
+package pkgRenderer;
 
 import org.lwjgl.BufferUtils;
 import java.nio.ByteBuffer;
@@ -8,12 +8,12 @@ import static org.lwjgl.opengl.GL11C.*;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
-public class MSTextureObject {
+public class TextureObject {
     private String texFilepath;
     private int texID;
     ByteBuffer texImage = null;
 
-    public MSTextureObject(String filepath) {
+    public TextureObject(String filepath) {
         this.texFilepath = filepath;
         texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);

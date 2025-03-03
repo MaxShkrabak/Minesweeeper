@@ -32,7 +32,7 @@ public abstract class RenderEngine {
         cols = col;
 
         GL.createCapabilities();
-        float CC_RED = 0.4f, CC_GREEN = 0.4f, CC_BLUE = 0.4f, CC_ALPHA = 1.0f; // Window background color (BLACK)
+        float CC_RED = 0.5f, CC_GREEN = 0.5f, CC_BLUE = 0.5f, CC_ALPHA = 1.0f; // Window background color (BLACK)
         glClearColor(CC_RED, CC_GREEN, CC_BLUE, CC_ALPHA);
 
         float[] mv = generateVertices(rows, cols);
@@ -67,7 +67,7 @@ public abstract class RenderEngine {
 
         texture_array[0] = new TextureObject("assets/images/One.png"); // Gold
         texture_array[1] = new TextureObject("assets/images/GameMine.png");       // Mine
-        texture_array[2] = new TextureObject("assets/images/Default.PNG");     // Default
+        texture_array[2] = new TextureObject("assets/images/Default.png");     // Default
     }
 
     // Method to generate tile vertices starting from bottom left of window

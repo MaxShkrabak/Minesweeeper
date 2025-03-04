@@ -9,7 +9,7 @@ public class MineBoard {
     private boolean gameActive = false;
     private static int ROWS;
     private static int COLS;
-    private static final int NUM_MINES = 14;
+    private static final int NUM_MINES = 40;
 
     public MineBoard(int rows, int cols) {
         ROWS = rows;
@@ -78,6 +78,10 @@ public class MineBoard {
             }
             System.out.println();
         }
+    }
+
+    public int getTileScore(int row, int col) {
+        return board[row][col].tile_score;
     }
 
     public Spot.TILE_STATUS getTileStatus(int row, int col) {
@@ -149,6 +153,7 @@ public class MineBoard {
             }
         }
     }
+
 
     private static class CellData {
         private Spot.TILE_STATUS status;

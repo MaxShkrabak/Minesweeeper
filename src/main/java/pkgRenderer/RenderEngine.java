@@ -23,7 +23,7 @@ public abstract class RenderEngine {
 
     protected WindowManager my_wm;
     protected ShaderObject shaderObj0;
-    protected TextureObject[] texture_array = new TextureObject[3];
+    protected TextureObject[] texture_array = new TextureObject[11];
 
     public void initOpenGL(WindowManager wm, int row, int col) {
         my_wm = wm;
@@ -68,6 +68,14 @@ public abstract class RenderEngine {
         texture_array[0] = new TextureObject("assets/images/One.png"); // Gold
         texture_array[1] = new TextureObject("assets/images/GameMine.png");       // Mine
         texture_array[2] = new TextureObject("assets/images/Default.png");     // Default
+        texture_array[3] = new TextureObject("assets/images/Two.png");
+        texture_array[4] = new TextureObject("assets/images/Zero.png");
+        texture_array[5] = new TextureObject("assets/images/Three.png");
+        texture_array[6] = new TextureObject("assets/images/Four.png");
+        texture_array[7] = new TextureObject("assets/images/Five.png");
+        texture_array[8]= new TextureObject("assets/images/Six.png");
+        texture_array[9] = new TextureObject("assets/images/Seven.png");
+        texture_array[10] = new TextureObject("assets/images/Eight.png");
     }
 
     // Method to generate tile vertices starting from bottom left of window

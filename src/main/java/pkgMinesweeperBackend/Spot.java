@@ -3,10 +3,10 @@ package pkgMinesweeperBackend;
 public class Spot {
     public static String WINDOW_TITLE = "CSC 133: Minesweeper";
     // Use LOWER length the more rows and cols being generated
-    public static int POLY_OFFSET = 2, POLYGON_LENGTH = 80, POLY_PADDING = 2;
-    public static int NUM_POLY_ROWS = 9, NUM_POLY_COLS = 7;
+    public static int POLY_OFFSET = 2, POLYGON_LENGTH = 40, POLY_PADDING = 2;
+    public static int NUM_POLY_ROWS = 16, NUM_POLY_COLS = 16;
 
-    public enum TILE_STATUS {NOT_EXPOSED, EXPOSED};
+    public enum TILE_STATUS {NOT_EXPOSED, EXPOSED, CLOSED};
     public enum TILE_TYPE {MINE,GOLD}
 
     public static int WIN_WIDTH =

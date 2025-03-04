@@ -20,7 +20,8 @@ import static pkgMinesweeperBackend.Spot.*;
 
 public class TileRenderer extends RenderEngine {
     private MineBoard my_board;
-
+    private boolean[][] flaggedTile;
+    private boolean clickHandled = false;
     // Constructor
     public TileRenderer() {
     }
@@ -28,12 +29,15 @@ public class TileRenderer extends RenderEngine {
     @Override
     public void render() {
         my_board = new MineBoard(rows, cols);
+        flaggedTile = new boolean[rows][cols];  // Ensure it is initialized when board size is known
+
         my_board.printBoard();
         my_board.printTileScores();
 
         renderTiles(rows, cols);
         my_wm.destroyGlfwWindow();
     }
+
 
     // Method used to render 'grid' of square tiles
     private void renderTiles(int rows, int cols) {
@@ -52,11 +56,17 @@ public class TileRenderer extends RenderEngine {
 
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
-                    if (tileIsClicked(row, col) && my_board.isGameActive()) {
-                        my_board.clickedTileStatus(row, col);
+                    if (tileIsClicked(row, col) == 1 && my_board.isGameActive()) {
+                        flaggedTile[row][col] = !flaggedTile[row][col];
+                        my_board.clickedTileStatus(row,col,true);
+                    }
+                    if (tileIsClicked(row, col) == 0 && my_board.isGameActive() && !flaggedTile[row][col]) {
+                        my_board.clickedTileStatus(row, col, false);
                     }
 
-                    if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
+                    if (flaggedTile[row][col]) {
+                        texture_array[11].bind_texture();
+                    } else if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
                         texture_array[2].bind_texture();
                     } else if (my_board.getTileType(row, col) == TILE_TYPE.MINE) {
                         texture_array[1].bind_texture();
@@ -111,7 +121,7 @@ public class TileRenderer extends RenderEngine {
     }
 
     // Method to check if a tile was clicked
-    private boolean tileIsClicked(int row, int col) {
+    private int tileIsClicked(int row, int col) {
         float xm = MouseListener.getX();
         float ym = MouseListener.getY();
 
@@ -123,8 +133,22 @@ public class TileRenderer extends RenderEngine {
         row = (rows - 1) - row;  // Flips the rows
         float yMin = POLY_OFFSET + row * (POLYGON_LENGTH + POLY_PADDING);
         float yMax = yMin + POLYGON_LENGTH;
+        boolean insideTile = xm >= xMin && xm <= xMax && ym >= yMin && ym <= yMax;
 
-        // Checks if click was within a tile
-        return MouseListener.mouseButtonDown(0) && xm >= xMin && xm <= xMax && ym >= yMin && ym <= yMax;
+        if (insideTile) {
+            if (MouseListener.mouseButtonDown(0)) return 0;
+
+            if (MouseListener.mouseButtonDown(1)) {
+                if (!clickHandled) {
+                    System.out.println("Right-click detected at row: " + row + ", col: " + col);
+                    clickHandled = true;
+                    return 1;
+                }
+            } else {
+                clickHandled = false;
+            }
+
+        }
+        return -1;
     }
 }

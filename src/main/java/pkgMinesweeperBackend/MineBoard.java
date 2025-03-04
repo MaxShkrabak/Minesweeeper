@@ -10,13 +10,13 @@ public class MineBoard {
     private static int ROWS;
     private static int COLS;
     private static final int NUM_MINES = 40;
+    private boolean firstPlay = true;
 
     public MineBoard(int rows, int cols) {
         ROWS = rows;
         COLS = cols;
         board = new CellData[rows][cols];
         int goldScore = 40;
-        int mineScore = 0;
 
         // All tiles will start as gold and not exposed
         for (int row = 0; row < rows; row++) {
@@ -28,11 +28,21 @@ public class MineBoard {
             }
         }
 
+        gameActive = true;
+    }
+
+    private void scatterMines(int sRow, int sCol) {
+        int mineScore = 0;
+
         // Stores all available coordinates in an ArrayList
         ArrayList<int[]> coordinates = new ArrayList<>();
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                coordinates.add(new int[]{row, col});
+                // Ensures initial tile and surrounding tiles are safe
+                if (Math.abs(row - sRow) <= 1 && Math.abs(col - sCol) <= 1) {
+                    continue;
+                }
+                coordinates.add(new int[]{row,col});
             }
         }
 
@@ -42,15 +52,13 @@ public class MineBoard {
             int randIndex = rand.nextInt(coordinates.size()); // Gets random index 0 to arrayList size
             int[] coord = coordinates.get(randIndex);
             coordinates.remove(randIndex);     // Remove that coordinate so that it can't be picked again
+
             int row = coord[0];
             int col = coord[1];
 
             board[row][col].type = Spot.TILE_TYPE.MINE;
             board[row][col].tile_score = mineScore;
         }
-
-        countNNN();
-        gameActive = true;
     }
 
     public void printBoard() {
@@ -135,6 +143,15 @@ public class MineBoard {
     }
 
     public void clickedTileStatus(int row, int col, boolean rightClick) {
+        // First play is always safe
+        if (firstPlay) {
+            scatterMines(row,col);
+            countNNN();
+            firstPlay = false;
+            printBoard();
+            printTileScores();
+        }
+
         if (rightClick) {
             if (getTileStatus(row,col) == Spot.TILE_STATUS.NOT_EXPOSED) {
                 board[row][col].status = Spot.TILE_STATUS.CLOSED;

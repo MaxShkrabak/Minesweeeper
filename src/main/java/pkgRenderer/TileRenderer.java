@@ -31,9 +31,6 @@ public class TileRenderer extends RenderEngine {
         my_board = new MineBoard(rows, cols);
         flaggedTile = new boolean[rows][cols];  // Ensure it is initialized when board size is known
 
-        my_board.printBoard();
-        my_board.printTileScores();
-
         renderTiles(rows, cols);
         my_wm.destroyGlfwWindow();
     }

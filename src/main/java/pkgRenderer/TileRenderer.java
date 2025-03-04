@@ -57,8 +57,10 @@ public class TileRenderer extends RenderEngine {
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
                     if (tileIsClicked(row, col) == 1 && my_board.isGameActive()) {
-                        flaggedTile[row][col] = !flaggedTile[row][col];
-                        my_board.clickedTileStatus(row,col,true);
+                        if (my_board.getTileStatus(row,col) != TILE_STATUS.EXPOSED) {
+                            flaggedTile[row][col] = !flaggedTile[row][col];
+                            my_board.clickedTileStatus(row,col,true);
+                        }
                     }
                     if (tileIsClicked(row, col) == 0 && my_board.isGameActive() && !flaggedTile[row][col]) {
                         my_board.clickedTileStatus(row, col, false);

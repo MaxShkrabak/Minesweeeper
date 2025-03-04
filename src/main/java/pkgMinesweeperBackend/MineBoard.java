@@ -139,9 +139,10 @@ public class MineBoard {
             if (getTileStatus(row,col) == Spot.TILE_STATUS.NOT_EXPOSED) {
                 board[row][col].status = Spot.TILE_STATUS.CLOSED;
                 System.out.println("Tile at row " + row + " col " + col + " was marked");
+            } else if (getTileStatus(row,col) == Spot.TILE_STATUS.CLOSED) {
+                board[row][col].status = Spot.TILE_STATUS.NOT_EXPOSED;
             }
-        }
-        if (getTileStatus(row, col) == Spot.TILE_STATUS.NOT_EXPOSED) {
+        } else if (getTileStatus(row, col) == Spot.TILE_STATUS.NOT_EXPOSED) {
             if (getTileType(row, col) == Spot.TILE_TYPE.GOLD) {
                 changeTileStatus(row, col);
             } else {

@@ -11,6 +11,7 @@ public class MineBoard {
     private static int COLS;
     private static final int NUM_MINES = 40;
     private boolean firstPlay = true;
+    private boolean[][] visited;
 
     public MineBoard(int rows, int cols) {
         ROWS = rows;
@@ -162,6 +163,9 @@ public class MineBoard {
         } else if (getTileStatus(row, col) == Spot.TILE_STATUS.NOT_EXPOSED) {
             if (getTileType(row, col) == Spot.TILE_TYPE.GOLD) {
                 changeTileStatus(row, col);
+                if (getTileScore(row,col) == 40) {
+                    revealSurrounding(row,col);
+                }
             } else {
                 revealBoard();
                 gameActive = false;
@@ -178,6 +182,30 @@ public class MineBoard {
         }
     }
 
+    // Will reveal 3x3 area around tiles with 0 mines near them recursively
+    private void revealSurrounding(int row, int col) {
+        if (visited == null) {
+            visited = new boolean[ROWS][COLS];
+        }
+
+        for (int deltaRow = -1; deltaRow <= 1; deltaRow++) {
+            for (int deltaCol = -1; deltaCol <= 1; deltaCol++) {
+                int newRow = row + deltaRow;
+                int newCol = col + deltaCol;
+
+                if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+                    if (!visited[newRow][newCol]) {
+                        changeTileStatus(newRow, newCol);
+                        visited[newRow][newCol] = true;
+
+                        if (getTileScore(newRow, newCol) == 40) {
+                            revealSurrounding(newRow, newCol);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private static class CellData {
         private Spot.TILE_STATUS status;

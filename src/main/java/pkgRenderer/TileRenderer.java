@@ -64,32 +64,32 @@ public class TileRenderer extends RenderEngine {
                     }
 
                     if (flaggedTile[row][col]) {
-                        texture_array[11].bind_texture();
+                        texture_array[10].bind_texture();
                     } else if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
-                        texture_array[2].bind_texture();
+                        texture_array[11].bind_texture();
                     } else if (my_board.getTileType(row, col) == TILE_TYPE.MINE) {
-                        texture_array[1].bind_texture();
+                        texture_array[9].bind_texture();
                     } else {
                         if (my_board.getTileScore(row, col) == 40) {
-                            texture_array[4].bind_texture();
+                            texture_array[0].bind_texture();
                         } else if (my_board.getTileScore(row, col) == 45) {
-                            texture_array[0].bind_texture();
+                            texture_array[1].bind_texture();
                         } else if (my_board.getTileScore(row, col) == 50) {
-                            texture_array[3].bind_texture();
+                            texture_array[2].bind_texture();
                         } else if (my_board.getTileScore(row,col) == 55) {
-                            texture_array[5].bind_texture();
+                            texture_array[3].bind_texture();
                         } else if (my_board.getTileScore(row,col) == 60) {
-                            texture_array[6].bind_texture();
+                            texture_array[4].bind_texture();
                         } else if (my_board.getTileScore(row,col) == 65) {
-                            texture_array[7].bind_texture();
+                            texture_array[5].bind_texture();
                         } else if (my_board.getTileScore(row,col) == 70) {
-                            texture_array[8].bind_texture();
+                            texture_array[6].bind_texture();
                         } else if (my_board.getTileScore(row,col) == 75) {
-                            texture_array[9].bind_texture();
+                            texture_array[7].bind_texture();
                         } else if (my_board.getTileScore(row,col) == 80) {
-                            texture_array[10].bind_texture();
+                            texture_array[8].bind_texture();
                         } else {
-                            texture_array[0].bind_texture();
+                            texture_array[1].bind_texture();
                         }
                     }
 

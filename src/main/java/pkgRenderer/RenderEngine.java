@@ -65,18 +65,18 @@ public abstract class RenderEngine {
         shaderObj0.compile_shader();
         shaderObj0.set_shader_program();
 
-        texture_array[0] = new TextureObject("assets/images/One.png"); // Gold
-        texture_array[1] = new TextureObject("assets/images/GameMine.png");       // Mine
-        texture_array[2] = new TextureObject("assets/images/Default.png");     // Default
-        texture_array[3] = new TextureObject("assets/images/Two.png");
-        texture_array[4] = new TextureObject("assets/images/Zero.png");
-        texture_array[5] = new TextureObject("assets/images/Three.png");
-        texture_array[6] = new TextureObject("assets/images/Four.png");
-        texture_array[7] = new TextureObject("assets/images/Five.png");
-        texture_array[8]= new TextureObject("assets/images/Six.png");
-        texture_array[9] = new TextureObject("assets/images/Seven.png");
-        texture_array[10] = new TextureObject("assets/images/Eight.png");
-        texture_array[11] = new TextureObject("assets/images/Flag.png");
+        texture_array[0] = new TextureObject("assets/images/Zero.png");
+        texture_array[1] = new TextureObject("assets/images/One.png");
+        texture_array[2] = new TextureObject("assets/images/Two.png");
+        texture_array[3] = new TextureObject("assets/images/Three.png");
+        texture_array[4] = new TextureObject("assets/images/Four.png");
+        texture_array[5] = new TextureObject("assets/images/Five.png");
+        texture_array[6] = new TextureObject("assets/images/Six.png");
+        texture_array[7] = new TextureObject("assets/images/Seven.png");
+        texture_array[8] = new TextureObject("assets/images/Eight.png");
+        texture_array[9] = new TextureObject("assets/images/GameMine.png");
+        texture_array[10] = new TextureObject("assets/images/Flag.png");
+        texture_array[11] = new TextureObject("assets/images/Default.png");
     }
 
     // Method to generate tile vertices starting from bottom left of window
@@ -94,7 +94,7 @@ public abstract class RenderEngine {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 float x = col * (tileSize + POLY_PADDING) + POLY_OFFSET;
-                float y = row * (tileSize + POLY_PADDING) + POLY_OFFSET;
+                float y = row * (tileSize + POLY_PADDING) + POLY_OFFSET + TOP_UI_HEIGHT;
 
                 // Bottom left
                 vertices[index++] = x;

@@ -13,7 +13,7 @@ public class Driver {
         RenderEngine my_re = new TileRenderer();
         WindowManager.get().initGLFWWindow(WIN_WIDTH, WIN_HEIGHT, WINDOW_TITLE);
         my_re.initOpenGL(WindowManager.get(), NUM_POLY_ROWS, NUM_POLY_COLS);
-
+        System.out.println("Width " + WIN_WIDTH + " Height " + WIN_HEIGHT);
         my_re.render();
     }  //  public static void main(String[] my_args)
 }  // public class csc133Driver(...)

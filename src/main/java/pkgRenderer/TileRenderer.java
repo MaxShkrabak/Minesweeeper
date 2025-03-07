@@ -97,6 +97,8 @@ public class TileRenderer extends RenderEngine {
                     renderTile(row, col);
                 }
             }
+            renderUI();
+
             my_wm.swapBuffers();
         }
     }
@@ -119,12 +121,11 @@ public class TileRenderer extends RenderEngine {
         return (row * cols + col) * VPT;
     }
 
-    // Method to check if a tile was clicked
     private int tileIsClicked(int row, int col) {
         float xm = MouseListener.getX();
         float ym = MouseListener.getY();
 
-        ym = Spot.WIN_HEIGHT - ym;      // Invert y-axis since origin is bottom left
+        ym = Spot.WIN_HEIGHT - ym; // Invert y-axis since origin is bottom left
 
         float xMin = POLY_OFFSET + col * (POLYGON_LENGTH + POLY_PADDING);
         float xMax = xMin + POLYGON_LENGTH;
@@ -135,19 +136,37 @@ public class TileRenderer extends RenderEngine {
         boolean insideTile = xm >= xMin && xm <= xMax && ym >= yMin && ym <= yMax;
 
         if (insideTile) {
-            if (MouseListener.mouseButtonDown(0)) return 0;
+            if (MouseListener.mouseButtonDown(0)) {
+                if (!clickHandled) {  // Ensures it only prints once per click
+                    System.out.println("Left-click at row: " + row + ", col: " + col);
+                    clickHandled = true;
+                }
+                return 0;
+            }
 
             if (MouseListener.mouseButtonDown(1)) {
                 if (!clickHandled) {
-                    System.out.println("Right-click detected at row: " + row + ", col: " + col);
+                    System.out.println("Right-click at row: " + row + ", col: " + col);
                     clickHandled = true;
                     return 1;
                 }
             } else {
                 clickHandled = false;
             }
-
         }
+
         return -1;
     }
+
+
+    private void renderUI() {
+        Vector4f rectangleColor = new Vector4f(0.26f, 0.29f, 0.32f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", rectangleColor);
+
+        glUseProgram(shaderObj0.getProgID());
+        glBindVertexArray(rectangleVaoID);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+    }
+
 }

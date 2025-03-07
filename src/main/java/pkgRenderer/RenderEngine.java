@@ -77,6 +77,8 @@ public abstract class RenderEngine {
         texture_array[9] = new TextureObject("assets/images/GameMine.png");
         texture_array[10] = new TextureObject("assets/images/Flag.png");
         texture_array[11] = new TextureObject("assets/images/Default.png");
+
+        initRectangle();
     }
 
     // Method to generate tile vertices starting from bottom left of window
@@ -128,6 +130,34 @@ public abstract class RenderEngine {
         }
         return vertices;
     }
+
+
+    public int rectangleVaoID, rectangleVboID;
+
+    // This is used to create shape for the UI at the top of window
+    private void initRectangle() {
+        float[] rectangleVertices = {
+                2f, 60f, 0.0f,  2f, 2f, 0.0f,  672f, 60f, 0.0f,  // First triangle
+                2f, 2f, 0.0f,  672f, 2f, 0.0f,  672f, 60f, 0.0f   // Second triangle
+        };
+
+        FloatBuffer rectangleBuffer = BufferUtils.createFloatBuffer(rectangleVertices.length);
+        rectangleBuffer.put(rectangleVertices).flip();
+
+        rectangleVaoID = glGenVertexArrays();
+        glBindVertexArray(rectangleVaoID);
+
+        rectangleVboID = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, rectangleVboID);
+        glBufferData(GL_ARRAY_BUFFER, rectangleBuffer, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * Float.BYTES, 0);
+        glEnableVertexAttribArray(0);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
+
 
     public abstract void render();
 }

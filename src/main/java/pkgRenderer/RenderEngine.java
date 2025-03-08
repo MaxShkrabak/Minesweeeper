@@ -18,8 +18,8 @@ public abstract class RenderEngine {
     protected static final int FLOAT_PER_SQUARE = 5;
     protected static final int VPT = 4;
 
-    protected int[] rectangleVaoIDs = new int[5];
-    protected int[] rectangleVboIDs = new int[5];
+    protected int[] rectangleVaoIDs = new int[10];
+    protected int[] rectangleVboIDs = new int[10];
     protected int vaoID, vboID;
     protected int rows, cols;
     protected int currentRectangleIndex = 0;
@@ -80,7 +80,7 @@ public abstract class RenderEngine {
         texture_array[9] = new TextureObject("assets/images/GameMine.png");
         texture_array[10] = new TextureObject("assets/images/Flag.png");
         texture_array[11] = new TextureObject("assets/images/Default.png");
-        texture_array[12] = new TextureObject("assets/timer/TimerNull.png");
+        texture_array[12] = new TextureObject("assets/timer/TimerZero.png");
         texture_array[13] = new TextureObject("assets/timer/TimerOne.png");
         texture_array[14] = new TextureObject("assets/timer/TimerTwo.png");
         texture_array[15] = new TextureObject("assets/timer/TimerThree.png");
@@ -92,9 +92,16 @@ public abstract class RenderEngine {
         texture_array[21] = new TextureObject("assets/timer/TimerNine.png");
 
         initRectangle(2f,2f,670f, 58f); // UI background
+
+        // In-game timer
         initRectangle(640f, 7f, 27f, 49f); // Ones counter
         initRectangle(613f, 7f, 27f, 49f); // Tens counter
-        initRectangle(586, 7f, 27f, 49f); // Tens counter
+        initRectangle(586, 7f, 27f, 49f); // Hundreds counter
+
+        // Mine counter
+        initRectangle(6, 7f, 27f, 49f); // Hundreds
+        initRectangle(33, 7f, 27f, 49f); // Tens
+        initRectangle(60, 7f, 27f, 49f); // Ones
     }
 
     // Method to generate tile vertices starting from bottom left of window

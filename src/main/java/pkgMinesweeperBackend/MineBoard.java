@@ -97,6 +97,10 @@ public class MineBoard {
         return board[row][col].status;
     }
 
+    public static int getNumMines() {
+        return NUM_MINES;
+    }
+
     public void changeTileStatus(int row, int col) {
         board[row][col].status = Spot.TILE_STATUS.EXPOSED;
         current_score += board[row][col].tile_score;

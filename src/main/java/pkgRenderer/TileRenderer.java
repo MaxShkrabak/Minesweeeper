@@ -26,8 +26,7 @@ public class TileRenderer extends RenderEngine {
     private boolean clickHandled = false;
     boolean startTimer = false;
     private GameTimer gameTimer = new GameTimer();
-
-
+    private int totalMines = MineBoard.getNumMines();
 
     // Constructor
     public TileRenderer() {
@@ -162,6 +161,7 @@ public class TileRenderer extends RenderEngine {
                 if (!clickHandled) {
                     System.out.println("Right-click at row: " + row + ", col: " + col);
                     clickHandled = true;
+                    totalMines--;
 
                     if (!startTimer) {
                         gameTimer.startTimer();
@@ -186,6 +186,10 @@ public class TileRenderer extends RenderEngine {
         int tens = (int) (currentTime / 10) % 10;
         int ones = (int) (currentTime % 10);
 
+        int mineHundreds = (totalMines / 100);
+        int mineTens = (totalMines / 10) % 10;
+        int mineOnes = (totalMines % 10);
+
         Vector4f rectangleColor = new Vector4f(0.26f, 0.29f, 0.32f, 1.0f);
         shaderObj0.loadVector4f("rectangleColor", rectangleColor);
 
@@ -199,7 +203,7 @@ public class TileRenderer extends RenderEngine {
         shaderObj0.loadVector4f("rectangleColor", OnesRectangleColor);
         glUseProgram(shaderObj0.getProgID());
 
-        switchTime(ones); // Updates ones counter
+        switchCounter(ones); // Updates ones counter
 
         glBindVertexArray(rectangleVaoIDs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -210,7 +214,7 @@ public class TileRenderer extends RenderEngine {
         shaderObj0.loadVector4f("rectangleColor", TensRectangleColor);
         glUseProgram(shaderObj0.getProgID());
 
-        switchTime(tens); // Updates tens counter
+        switchCounter(tens); // Updates tens counter
 
         glBindVertexArray(rectangleVaoIDs[2]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -221,15 +225,44 @@ public class TileRenderer extends RenderEngine {
         shaderObj0.loadVector4f("rectangleColor", HundredsRectangleColor);
         glUseProgram(shaderObj0.getProgID());
 
-        switchTime(hundreds); // Updates tens counter
+        switchCounter(hundreds); // Updates tens counter
 
         glBindVertexArray(rectangleVaoIDs[3]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
+
+        // Hundreds Mine counter
+        Vector4f HMineRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", HMineRectangleColor);
+        glUseProgram(shaderObj0.getProgID());
+
+        switchCounter(mineHundreds);
+
+        glBindVertexArray(rectangleVaoIDs[4]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
+        // Tens Mine counter
+        Vector4f TMineRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", TMineRectangleColor);
+        glUseProgram(shaderObj0.getProgID());
+        switchCounter(mineTens);
+        glBindVertexArray(rectangleVaoIDs[5]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
+        // Ones Mine counter
+        Vector4f OMineRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", OMineRectangleColor);
+        glUseProgram(shaderObj0.getProgID());
+        switchCounter(mineOnes);
+        glBindVertexArray(rectangleVaoIDs[6]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
     }
 
-    public void switchTime(int time) {
-        switch (time) {
+    public void switchCounter(int value) {
+        switch (value) {
             case 1:
                 texture_array[13].bind_texture();
                 break;

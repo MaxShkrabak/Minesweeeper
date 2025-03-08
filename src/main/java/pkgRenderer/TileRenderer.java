@@ -164,7 +164,7 @@ public class TileRenderer extends RenderEngine {
         shaderObj0.loadVector4f("rectangleColor", rectangleColor);
 
         glUseProgram(shaderObj0.getProgID());
-        glBindVertexArray(rectangleVaoID);
+        glBindVertexArray(rectangleVaoIDs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
     }

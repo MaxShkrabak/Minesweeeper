@@ -18,8 +18,11 @@ public abstract class RenderEngine {
     protected static final int FLOAT_PER_SQUARE = 5;
     protected static final int VPT = 4;
 
+    protected int[] rectangleVaoIDs = new int[5];
+    protected int[] rectangleVboIDs = new int[5];
     protected int vaoID, vboID;
     protected int rows, cols;
+    protected int currentRectangleIndex = 0;
 
     protected WindowManager my_wm;
     protected ShaderObject shaderObj0;
@@ -78,7 +81,7 @@ public abstract class RenderEngine {
         texture_array[10] = new TextureObject("assets/images/Flag.png");
         texture_array[11] = new TextureObject("assets/images/Default.png");
 
-        initRectangle();
+        initRectangle(2f,2f,670f, 58f);
     }
 
     // Method to generate tile vertices starting from bottom left of window
@@ -131,31 +134,38 @@ public abstract class RenderEngine {
         return vertices;
     }
 
-
-    public int rectangleVaoID, rectangleVboID;
-
-    // This is used to create shape for the UI at the top of window
-    private void initRectangle() {
+    // Used to create rectangles
+    private void initRectangle(float x, float y, float width, float height) {
         float[] rectangleVertices = {
-                2f, 60f, 0.0f,  2f, 2f, 0.0f,  672f, 60f, 0.0f,  // First triangle
-                2f, 2f, 0.0f,  672f, 2f, 0.0f,  672f, 60f, 0.0f   // Second triangle
+                x, y + height, 0.0f, 0.0f, 1.0f,
+                x, y, 0.0f, 0.0f, 0.0f,
+                x + width, y + height, 0.0f, 1.0f, 1.0f,
+
+                x, y, 0.0f, 0.0f, 0.0f,
+                x + width, y, 0.0f, 1.0f, 0.0f,
+                x + width, y + height, 0.0f, 1.0f, 1.0f,
         };
 
         FloatBuffer rectangleBuffer = BufferUtils.createFloatBuffer(rectangleVertices.length);
         rectangleBuffer.put(rectangleVertices).flip();
 
-        rectangleVaoID = glGenVertexArrays();
-        glBindVertexArray(rectangleVaoID);
+        rectangleVaoIDs[currentRectangleIndex] = glGenVertexArrays();
+        glBindVertexArray(rectangleVaoIDs[currentRectangleIndex]);
 
-        rectangleVboID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, rectangleVboID);
+        rectangleVboIDs[currentRectangleIndex] = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, rectangleVboIDs[currentRectangleIndex]);
         glBufferData(GL_ARRAY_BUFFER, rectangleBuffer, GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * Float.BYTES, 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * Float.BYTES, 0);
         glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1,2,GL_FLOAT, false, 5 * Float.BYTES, 3 * Float.BYTES);
+        glEnableVertexAttribArray(1);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
+
+        currentRectangleIndex++;
     }
 
 

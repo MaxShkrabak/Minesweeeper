@@ -83,13 +83,13 @@ public abstract class RenderEngine {
         texture_array[12] = new TextureObject("assets/timer/TimerNull.png");
         texture_array[13] = new TextureObject("assets/timer/TimerOne.png");
         texture_array[14] = new TextureObject("assets/timer/TimerTwo.png");
-        texture_array[16] = new TextureObject("assets/timer/TimerThree.png");
-        texture_array[17] = new TextureObject("assets/timer/TimerFour.png");
-        texture_array[18] = new TextureObject("assets/timer/TimerFive.png");
-        texture_array[19] = new TextureObject("assets/timer/TimerSix.png");
-        texture_array[20] = new TextureObject("assets/timer/TimerSeven.png");
-        texture_array[21] = new TextureObject("assets/timer/TimerEight.png");
-        texture_array[22] = new TextureObject("assets/timer/TimerNine.png");
+        texture_array[15] = new TextureObject("assets/timer/TimerThree.png");
+        texture_array[16] = new TextureObject("assets/timer/TimerFour.png");
+        texture_array[17] = new TextureObject("assets/timer/TimerFive.png");
+        texture_array[18] = new TextureObject("assets/timer/TimerSix.png");
+        texture_array[19] = new TextureObject("assets/timer/TimerSeven.png");
+        texture_array[20] = new TextureObject("assets/timer/TimerEight.png");
+        texture_array[21] = new TextureObject("assets/timer/TimerNine.png");
 
         initRectangle(2f,2f,670f, 58f); // UI background
         initRectangle(640f, 7f, 27f, 49f);

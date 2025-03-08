@@ -2,6 +2,7 @@ package pkgRenderer;
 
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
+import pkgMinesweeperBackend.GameTimer;
 import pkgMinesweeperBackend.MineBoard;
 import pkgMinesweeperBackend.Spot;
 import pkgUtils.MouseListener;
@@ -23,6 +24,11 @@ public class TileRenderer extends RenderEngine {
     private MineBoard my_board;
     private boolean[][] flaggedTile;
     private boolean clickHandled = false;
+    boolean startTimer = false;
+    private GameTimer gameTimer = new GameTimer();
+
+
+
     // Constructor
     public TileRenderer() {
     }
@@ -138,10 +144,17 @@ public class TileRenderer extends RenderEngine {
 
         if (insideTile) {
             if (MouseListener.mouseButtonDown(0)) {
+
                 if (!clickHandled) {  // Ensures it only prints once per click
                     System.out.println("Left-click at row: " + row + ", col: " + col);
                     clickHandled = true;
                 }
+
+                if (!startTimer) {
+                    gameTimer.startTimer();
+                    startTimer = true;
+                }
+
                 return 0;
             }
 
@@ -149,6 +162,12 @@ public class TileRenderer extends RenderEngine {
                 if (!clickHandled) {
                     System.out.println("Right-click at row: " + row + ", col: " + col);
                     clickHandled = true;
+
+                    if (!startTimer) {
+                        gameTimer.startTimer();
+                        startTimer = true;
+                    }
+
                     return 1;
                 }
             } else {
@@ -161,6 +180,8 @@ public class TileRenderer extends RenderEngine {
 
 
     private void renderUI() {
+        long currentTime = gameTimer.getElapsedTime();
+
         Vector4f rectangleColor = new Vector4f(0.26f, 0.29f, 0.32f, 1.0f);
         shaderObj0.loadVector4f("rectangleColor", rectangleColor);
 
@@ -175,7 +196,23 @@ public class TileRenderer extends RenderEngine {
         shaderObj0.loadVector4f("rectangleColor", secondRectangleColor);
         glUseProgram(shaderObj0.getProgID());
 
-        texture_array[20].bind_texture();
+        switch ((int) currentTime) {
+            case 1:
+                texture_array[13].bind_texture();
+                break;
+            case 2:
+                texture_array[14].bind_texture();
+                break;
+            case 3:
+                texture_array[15].bind_texture();
+                break;
+            case 4:
+                texture_array[16].bind_texture();
+                break;
+            default:
+                texture_array[12].bind_texture();
+                break;
+        }
 
         glBindVertexArray(rectangleVaoIDs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 6);

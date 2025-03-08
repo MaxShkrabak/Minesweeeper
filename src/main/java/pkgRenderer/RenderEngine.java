@@ -81,7 +81,8 @@ public abstract class RenderEngine {
         texture_array[10] = new TextureObject("assets/images/Flag.png");
         texture_array[11] = new TextureObject("assets/images/Default.png");
 
-        initRectangle(2f,2f,670f, 58f);
+        initRectangle(2f,2f,670f, 58f); // UI background
+        initRectangle(600f, 10f, 30f, 30f);
     }
 
     // Method to generate tile vertices starting from bottom left of window

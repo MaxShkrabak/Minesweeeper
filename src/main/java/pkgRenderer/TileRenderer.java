@@ -7,6 +7,7 @@ import pkgMinesweeperBackend.Spot;
 import pkgUtils.MouseListener;
 
 import java.nio.IntBuffer;
+import java.util.Vector;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
@@ -163,8 +164,20 @@ public class TileRenderer extends RenderEngine {
         Vector4f rectangleColor = new Vector4f(0.26f, 0.29f, 0.32f, 1.0f);
         shaderObj0.loadVector4f("rectangleColor", rectangleColor);
 
+        for (int i = 0; i < currentRectangleIndex; i++) {
+            glBindVertexArray(rectangleVaoIDs[i]);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glBindVertexArray(0);
+        }
+
+        // Timer rectangle
+        Vector4f secondRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", secondRectangleColor);
         glUseProgram(shaderObj0.getProgID());
-        glBindVertexArray(rectangleVaoIDs[0]);
+
+        texture_array[9].bind_texture();
+
+        glBindVertexArray(rectangleVaoIDs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
     }

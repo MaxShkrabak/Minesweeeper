@@ -92,7 +92,9 @@ public abstract class RenderEngine {
         texture_array[21] = new TextureObject("assets/timer/TimerNine.png");
 
         initRectangle(2f,2f,670f, 58f); // UI background
-        initRectangle(640f, 7f, 27f, 49f);
+        initRectangle(640f, 7f, 27f, 49f); // Ones counter
+        initRectangle(613f, 7f, 27f, 49f); // Tens counter
+        initRectangle(586, 7f, 27f, 49f); // Tens counter
     }
 
     // Method to generate tile vertices starting from bottom left of window

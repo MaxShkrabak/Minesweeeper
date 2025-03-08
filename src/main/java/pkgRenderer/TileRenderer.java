@@ -182,21 +182,54 @@ public class TileRenderer extends RenderEngine {
     private void renderUI() {
         long currentTime = gameTimer.getElapsedTime();
 
+        int hundreds = (int) (currentTime / 100);
+        int tens = (int) (currentTime / 10) % 10;
+        int ones = (int) (currentTime % 10);
+
         Vector4f rectangleColor = new Vector4f(0.26f, 0.29f, 0.32f, 1.0f);
         shaderObj0.loadVector4f("rectangleColor", rectangleColor);
 
-        for (int i = 0; i < currentRectangleIndex; i++) {
-            glBindVertexArray(rectangleVaoIDs[i]);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            glBindVertexArray(0);
-        }
+        glBindVertexArray(rectangleVaoIDs[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
 
-        // Timer rectangle
-        Vector4f secondRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", secondRectangleColor);
+
+        // Ones timer rectangle
+        Vector4f OnesRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", OnesRectangleColor);
         glUseProgram(shaderObj0.getProgID());
 
-        switch ((int) currentTime) {
+        switchTime(ones); // Updates ones counter
+
+        glBindVertexArray(rectangleVaoIDs[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
+        // Tenths timer counter
+        Vector4f TensRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", TensRectangleColor);
+        glUseProgram(shaderObj0.getProgID());
+
+        switchTime(tens); // Updates tens counter
+
+        glBindVertexArray(rectangleVaoIDs[2]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
+        // Hundreds timer counter
+        Vector4f HundredsRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", HundredsRectangleColor);
+        glUseProgram(shaderObj0.getProgID());
+
+        switchTime(hundreds); // Updates tens counter
+
+        glBindVertexArray(rectangleVaoIDs[3]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+    }
+
+    public void switchTime(int time) {
+        switch (time) {
             case 1:
                 texture_array[13].bind_texture();
                 break;
@@ -209,14 +242,24 @@ public class TileRenderer extends RenderEngine {
             case 4:
                 texture_array[16].bind_texture();
                 break;
+            case 5:
+                texture_array[17].bind_texture();
+                break;
+            case 6:
+                texture_array[18].bind_texture();
+                break;
+            case 7:
+                texture_array[19].bind_texture();
+                break;
+            case 8:
+                texture_array[20].bind_texture();
+                break;
+            case 9:
+                texture_array[21].bind_texture();
+                break;
             default:
                 texture_array[12].bind_texture();
                 break;
         }
-
-        glBindVertexArray(rectangleVaoIDs[1]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
     }
-
 }

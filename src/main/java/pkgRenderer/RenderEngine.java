@@ -26,7 +26,7 @@ public abstract class RenderEngine {
 
     protected WindowManager my_wm;
     protected ShaderObject shaderObj0;
-    protected TextureObject[] texture_array = new TextureObject[12];
+    protected TextureObject[] texture_array = new TextureObject[25];
 
     public void initOpenGL(WindowManager wm, int row, int col) {
         my_wm = wm;
@@ -80,9 +80,19 @@ public abstract class RenderEngine {
         texture_array[9] = new TextureObject("assets/images/GameMine.png");
         texture_array[10] = new TextureObject("assets/images/Flag.png");
         texture_array[11] = new TextureObject("assets/images/Default.png");
+        texture_array[12] = new TextureObject("assets/timer/TimerNull.png");
+        texture_array[13] = new TextureObject("assets/timer/TimerOne.png");
+        texture_array[14] = new TextureObject("assets/timer/TimerTwo.png");
+        texture_array[16] = new TextureObject("assets/timer/TimerThree.png");
+        texture_array[17] = new TextureObject("assets/timer/TimerFour.png");
+        texture_array[18] = new TextureObject("assets/timer/TimerFive.png");
+        texture_array[19] = new TextureObject("assets/timer/TimerSix.png");
+        texture_array[20] = new TextureObject("assets/timer/TimerSeven.png");
+        texture_array[21] = new TextureObject("assets/timer/TimerEight.png");
+        texture_array[22] = new TextureObject("assets/timer/TimerNine.png");
 
         initRectangle(2f,2f,670f, 58f); // UI background
-        initRectangle(600f, 10f, 30f, 30f);
+        initRectangle(640f, 7f, 27f, 49f);
     }
 
     // Method to generate tile vertices starting from bottom left of window

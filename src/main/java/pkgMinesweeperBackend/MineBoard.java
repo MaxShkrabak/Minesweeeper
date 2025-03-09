@@ -181,7 +181,9 @@ public class MineBoard {
     private void revealBoard() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                board[row][col].status = Spot.TILE_STATUS.EXPOSED;
+                if (board[row][col].type == Spot.TILE_TYPE.MINE) {
+                    board[row][col].status = Spot.TILE_STATUS.EXPOSED;
+                }
             }
         }
     }

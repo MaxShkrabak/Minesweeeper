@@ -90,6 +90,7 @@ public abstract class RenderEngine {
         texture_array[19] = new TextureObject("assets/timer/TimerSeven.png");
         texture_array[20] = new TextureObject("assets/timer/TimerEight.png");
         texture_array[21] = new TextureObject("assets/timer/TimerNine.png");
+        texture_array[22] = new TextureObject("assets/images/ResetButton.png");
 
         initRectangle(2f,2f,670f, 58f); // UI background
 
@@ -102,6 +103,9 @@ public abstract class RenderEngine {
         initRectangle(6, 7f, 27f, 49f); // Hundreds
         initRectangle(33, 7f, 27f, 49f); // Tens
         initRectangle(60, 7f, 27f, 49f); // Ones
+
+        // Reset button
+        initRectangle(320, 11f, 40f, 40f);
     }
 
     // Method to generate tile vertices starting from bottom left of window

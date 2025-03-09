@@ -51,6 +51,10 @@ public class TileRenderer extends RenderEngine {
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
 
+            if (resetIsClicked()) {
+                resetGame();
+            }
+
             shaderObj0.loadMatrix4f("uProjMatrix", my_cam.getProjectionMatrix());
             shaderObj0.loadMatrix4f("uViewMatrix", my_cam.getViewingMatrix());
 
@@ -178,6 +182,25 @@ public class TileRenderer extends RenderEngine {
         return -1;
     }
 
+    private boolean resetIsClicked() {
+        float xm = MouseListener.getX();
+        float ym = MouseListener.getY();
+
+        ym = Spot.WIN_HEIGHT - ym;
+
+        float resetXMin = 320f;
+        float resetXMax = 360f;
+        float resetYMin = 683f;
+        float resetYMax = 723f;
+
+        boolean insideButton = xm >= resetXMin && xm <= resetXMax && ym >= resetYMin && ym <= resetYMax;
+
+        if (insideButton && MouseListener.mouseButtonDown(0)) {
+            return true;
+        }
+        return false;
+    }
+
 
     private void renderUI() {
         long currentTime = gameTimer.getElapsedTime();
@@ -259,6 +282,17 @@ public class TileRenderer extends RenderEngine {
         glBindVertexArray(rectangleVaoIDs[6]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
+
+        // Reset button
+        Vector4f ResetRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
+        shaderObj0.loadVector4f("rectangleColor", ResetRectangleColor);
+        glUseProgram(shaderObj0.getProgID());
+
+        texture_array[22].bind_texture();
+
+        glBindVertexArray(rectangleVaoIDs[7]);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
     }
 
     public void switchCounter(int value) {
@@ -294,5 +328,14 @@ public class TileRenderer extends RenderEngine {
                 texture_array[12].bind_texture();
                 break;
         }
+    }
+
+    private void resetGame() {
+        my_board = new MineBoard(rows,cols);
+        flaggedTile = new boolean[rows][cols];
+        gameTimer.resetTimer();
+        totalMines = MineBoard.getNumMines();
+        startTimer = false;
+        clickHandled = false;
     }
 }

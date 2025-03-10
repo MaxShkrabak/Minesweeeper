@@ -69,11 +69,14 @@ public class TileRenderer extends RenderEngine {
                             my_board.clickedTileStatus(row,col,true);
                         }
                     }
+
                     if (tileIsClicked(row, col) == 0 && my_board.isGameActive() && !flaggedTile[row][col]) {
                         my_board.clickedTileStatus(row, col, false);
                     }
 
-                    if (flaggedTile[row][col]) {
+                    if (flaggedTile[row][col] && my_board.getTileStatus(row,col) == TILE_STATUS.CLOSEDMINE) {
+                        texture_array[23].bind_texture();
+                    } else if (flaggedTile[row][col]) {
                         texture_array[10].bind_texture();
                     } else if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
                         texture_array[11].bind_texture();

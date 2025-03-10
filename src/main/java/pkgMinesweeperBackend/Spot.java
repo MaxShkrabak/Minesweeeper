@@ -8,7 +8,7 @@ public class Spot {
 
     public static final int TOP_UI_HEIGHT = 60;
 
-    public enum TILE_STATUS {NOT_EXPOSED, EXPOSED, CLOSED};
+    public enum TILE_STATUS {NOT_EXPOSED, EXPOSED, CLOSED, CLOSEDMINE};
     public enum TILE_TYPE {MINE,GOLD}
 
     public static int WIN_WIDTH =

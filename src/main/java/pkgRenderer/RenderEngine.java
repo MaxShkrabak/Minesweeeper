@@ -91,6 +91,7 @@ public abstract class RenderEngine {
         texture_array[20] = new TextureObject("assets/timer/TimerEight.png");
         texture_array[21] = new TextureObject("assets/timer/TimerNine.png");
         texture_array[22] = new TextureObject("assets/images/ResetButton.png");
+        texture_array[23] = new TextureObject("assets/images/CorrectFlag.png");
 
         initRectangle(2f,2f,670f, 58f); // UI background
 

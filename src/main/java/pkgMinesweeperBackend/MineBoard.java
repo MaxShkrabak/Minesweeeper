@@ -182,7 +182,11 @@ public class MineBoard {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 if (board[row][col].type == Spot.TILE_TYPE.MINE) {
-                    board[row][col].status = Spot.TILE_STATUS.EXPOSED;
+                    if (board[row][col].status == Spot.TILE_STATUS.CLOSED) {
+                        board[row][col].status = Spot.TILE_STATUS.CLOSEDMINE;
+                    } else {
+                        board[row][col].status = Spot.TILE_STATUS.EXPOSED;
+                    }
                 }
             }
         }

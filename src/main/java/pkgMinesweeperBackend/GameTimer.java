@@ -3,6 +3,7 @@ package pkgMinesweeperBackend;
 public class GameTimer {
     private boolean running = false;
     private long startTime = 0;
+    private long currentTIme = 0;
 
     public void startTimer() {
        if (!running) {
@@ -15,11 +16,19 @@ public class GameTimer {
         if (running) {
             return (System.currentTimeMillis() - startTime) / 1000;
         }
-        return 0;
+        return currentTIme;
     }
 
     public void resetTimer() {
         running = false;
         startTime = 0;
+        currentTIme = 0;
+    }
+
+    public void stopTimer() {
+        if (running) {
+            currentTIme = (System.currentTimeMillis() - startTime) / 1000;
+            running = false;
+        }
     }
 }

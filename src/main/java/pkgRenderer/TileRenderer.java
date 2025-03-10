@@ -81,6 +81,7 @@ public class TileRenderer extends RenderEngine {
                     } else if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
                         texture_array[11].bind_texture();
                     } else if (my_board.getTileType(row, col) == TILE_TYPE.MINE) {
+                        gameTimer.stopTimer();
                         texture_array[9].bind_texture();
                     } else {
                         if (my_board.getTileScore(row, col) == 40) {

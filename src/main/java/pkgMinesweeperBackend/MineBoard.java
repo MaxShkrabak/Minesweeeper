@@ -125,24 +125,22 @@ public class MineBoard {
 
                 Spot.TILE_TYPE mine = Spot.TILE_TYPE.MINE;
                 int numMines = 0;
-                int prevC = (COLS + j - 1) % COLS;
-                int nextC = (j + 1) % COLS;
-                int nextR = (i + 1) % ROWS;
-                int prevR = (ROWS + i - 1) % ROWS;
 
-                numMines += getTileType(i, prevC) == mine ? 1 : 0;
-                numMines += getTileType(prevR, j) == mine ? 1 : 0;
-                numMines += getTileType(i, nextC) == mine ? 1 : 0;
-                numMines += getTileType(nextR, j) == mine ? 1 : 0;
+                for (int nextRow = -1; nextRow <= 1; nextRow++) {
+                    for (int nextCol = -1; nextCol <= 1; nextCol++) {
 
-                numMines += getTileType(nextR, prevC) == mine ? 1 : 0;
-                numMines += getTileType(nextR, nextC) == mine ? 1 : 0;
-                numMines += getTileType(prevR, nextC) == mine ? 1 : 0;
-                numMines += getTileType(prevR, prevC) == mine ? 1 : 0;
+                        int NRow = i + nextRow;
+                        int NCol = j + nextCol;
 
-                int nnn_tiles = 8; // There are 8 surrounding tiles
-                int numGold = nnn_tiles - numMines;  // This will give total gold tiles surrounding the cell
-                board[i][j].tile_score = (10 * numMines) + (5 * numGold); // Sets the new score
+                        if (NRow >= 0 && NRow < ROWS && NCol >= 0 && NCol < COLS) {
+                            if (getTileType(NRow, NCol) == mine) {
+                                numMines++;
+                            }
+                        }
+                    }
+                }
+
+                board[i][j].tile_score = 40 + (5 * numMines);
             }
         }
     }

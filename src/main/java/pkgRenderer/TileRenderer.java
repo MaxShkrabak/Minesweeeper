@@ -63,6 +63,7 @@ public class TileRenderer extends RenderEngine {
 
             for (int row = 0; row < rows; row++) {
                 for (int col = 0; col < cols; col++) {
+                    // Right-clicked tile
                     if (tileIsClicked(row, col) == 1 && my_board.isGameActive()) {
                         if (my_board.getTileStatus(row,col) != TILE_STATUS.EXPOSED) {
                             flaggedTile[row][col] = !flaggedTile[row][col];
@@ -70,12 +71,15 @@ public class TileRenderer extends RenderEngine {
                         }
                     }
 
+                    // Left-clicked tile
                     if (tileIsClicked(row, col) == 0 && my_board.isGameActive() && !flaggedTile[row][col]) {
                         my_board.clickedTileStatus(row, col, false);
                     }
 
                     if (flaggedTile[row][col] && my_board.getTileStatus(row,col) == TILE_STATUS.CLOSEDMINE) {
                         texture_array[23].bind_texture();
+                    } else if (flaggedTile[row][col] && my_board.getTileStatus(row,col) == TILE_STATUS.EXPOSED) {
+                        flaggedTile[row][col] = false;
                     } else if (flaggedTile[row][col]) {
                         texture_array[10].bind_texture();
                     } else if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
@@ -165,6 +169,7 @@ public class TileRenderer extends RenderEngine {
                 return 0;
             }
 
+            // Right Click
             if (MouseListener.mouseButtonDown(1)) {
                 if (!clickHandled) {
                     System.out.println("Right-click at row: " + row + ", col: " + col);

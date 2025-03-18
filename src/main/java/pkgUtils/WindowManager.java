@@ -52,7 +52,7 @@ public class WindowManager {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        Icon.setIcon(win_id, gameIcon);
+        WindowIcon.setIcon(win_id, gameIcon);
 
         glfwMakeContextCurrent(win_id);
         glfwSetMouseButtonCallback(win_id, MouseListener::mouseButtonCallback);

@@ -8,7 +8,6 @@ import pkgMinesweeperBackend.Spot;
 import pkgUtils.MouseListener;
 
 import java.nio.IntBuffer;
-import java.util.Vector;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
@@ -77,38 +76,22 @@ public class TileRenderer extends RenderEngine {
                     }
 
                     if (flaggedTile[row][col] && my_board.getTileStatus(row,col) == TILE_STATUS.CLOSEDMINE) {
-                        texture_array[23].bind_texture();
+                        game_array[13].bind_texture();
                     } else if (flaggedTile[row][col] && my_board.getTileStatus(row,col) == TILE_STATUS.EXPOSED) {
                         flaggedTile[row][col] = false;
                     } else if (flaggedTile[row][col]) {
-                        texture_array[10].bind_texture();
+                        game_array[10].bind_texture();
                     } else if (my_board.getTileStatus(row, col) != TILE_STATUS.EXPOSED) {
-                        texture_array[11].bind_texture();
+                        game_array[11].bind_texture();
                     } else if (my_board.getTileType(row, col) == TILE_TYPE.MINE) {
                         gameTimer.stopTimer();
-                        texture_array[9].bind_texture();
+                        game_array[9].bind_texture();
                     } else {
-                        if (my_board.getTileScore(row, col) == 40) {
-                            texture_array[0].bind_texture();
-                        } else if (my_board.getTileScore(row, col) == 45) {
-                            texture_array[1].bind_texture();
-                        } else if (my_board.getTileScore(row, col) == 50) {
-                            texture_array[2].bind_texture();
-                        } else if (my_board.getTileScore(row,col) == 55) {
-                            texture_array[3].bind_texture();
-                        } else if (my_board.getTileScore(row,col) == 60) {
-                            texture_array[4].bind_texture();
-                        } else if (my_board.getTileScore(row,col) == 65) {
-                            texture_array[5].bind_texture();
-                        } else if (my_board.getTileScore(row,col) == 70) {
-                            texture_array[6].bind_texture();
-                        } else if (my_board.getTileScore(row,col) == 75) {
-                            texture_array[7].bind_texture();
-                        } else if (my_board.getTileScore(row,col) == 80) {
-                            texture_array[8].bind_texture();
-                        } else {
-                            texture_array[1].bind_texture();
-                        }
+                        // Bind texture based on tile score
+                        int score = my_board.getTileScore(row,col);
+                        int textureIndex = (score - 40) / 5;
+                        if (textureIndex < 0 || textureIndex > 8) {textureIndex = 1;}
+                        game_array[textureIndex].bind_texture();
                     }
 
                     shaderObj0.loadVector4f("COLOR_FACTOR", COLOR_FACTOR);
@@ -204,10 +187,7 @@ public class TileRenderer extends RenderEngine {
 
         boolean insideButton = xm >= resetXMin && xm <= resetXMax && ym >= resetYMin && ym <= resetYMax;
 
-        if (insideButton && MouseListener.mouseButtonDown(0)) {
-            return true;
-        }
-        return false;
+        return insideButton && MouseListener.mouseButtonDown(0);
     }
 
 
@@ -297,7 +277,7 @@ public class TileRenderer extends RenderEngine {
         shaderObj0.loadVector4f("rectangleColor", ResetRectangleColor);
         glUseProgram(shaderObj0.getProgID());
 
-        texture_array[22].bind_texture();
+        game_array[12].bind_texture();
 
         glBindVertexArray(rectangleVaoIDs[7]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -305,37 +285,10 @@ public class TileRenderer extends RenderEngine {
     }
 
     public void switchCounter(int value) {
-        switch (value) {
-            case 1:
-                texture_array[13].bind_texture();
-                break;
-            case 2:
-                texture_array[14].bind_texture();
-                break;
-            case 3:
-                texture_array[15].bind_texture();
-                break;
-            case 4:
-                texture_array[16].bind_texture();
-                break;
-            case 5:
-                texture_array[17].bind_texture();
-                break;
-            case 6:
-                texture_array[18].bind_texture();
-                break;
-            case 7:
-                texture_array[19].bind_texture();
-                break;
-            case 8:
-                texture_array[20].bind_texture();
-                break;
-            case 9:
-                texture_array[21].bind_texture();
-                break;
-            default:
-                texture_array[12].bind_texture();
-                break;
+        if (value >= 0 && value <= 9) {
+            timer_array[value].bind_texture();
+        } else {
+            timer_array[0].bind_texture();
         }
     }
 

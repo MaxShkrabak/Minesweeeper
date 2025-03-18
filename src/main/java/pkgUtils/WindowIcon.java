@@ -8,7 +8,7 @@ import org.lwjgl.stb.STBImage;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-public class Icon {
+public class WindowIcon {
     public static void setIcon(long winID, String iconPath) {
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);

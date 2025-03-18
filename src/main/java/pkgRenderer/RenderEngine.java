@@ -26,7 +26,8 @@ public abstract class RenderEngine {
 
     protected WindowManager my_wm;
     protected ShaderObject shaderObj0;
-    protected TextureObject[] texture_array = new TextureObject[25];
+    protected TextureObject[] game_array = new TextureObject[14];
+    protected TextureObject[] timer_array = new TextureObject[10];
 
     public void initOpenGL(WindowManager wm, int row, int col) {
         my_wm = wm;
@@ -68,30 +69,9 @@ public abstract class RenderEngine {
         shaderObj0.compile_shader();
         shaderObj0.set_shader_program();
 
-        texture_array[0] = new TextureObject("assets/images/Zero.png");
-        texture_array[1] = new TextureObject("assets/images/One.png");
-        texture_array[2] = new TextureObject("assets/images/Two.png");
-        texture_array[3] = new TextureObject("assets/images/Three.png");
-        texture_array[4] = new TextureObject("assets/images/Four.png");
-        texture_array[5] = new TextureObject("assets/images/Five.png");
-        texture_array[6] = new TextureObject("assets/images/Six.png");
-        texture_array[7] = new TextureObject("assets/images/Seven.png");
-        texture_array[8] = new TextureObject("assets/images/Eight.png");
-        texture_array[9] = new TextureObject("assets/images/GameMine.png");
-        texture_array[10] = new TextureObject("assets/images/Flag.png");
-        texture_array[11] = new TextureObject("assets/images/Default.png");
-        texture_array[12] = new TextureObject("assets/timer/TimerZero.png");
-        texture_array[13] = new TextureObject("assets/timer/TimerOne.png");
-        texture_array[14] = new TextureObject("assets/timer/TimerTwo.png");
-        texture_array[15] = new TextureObject("assets/timer/TimerThree.png");
-        texture_array[16] = new TextureObject("assets/timer/TimerFour.png");
-        texture_array[17] = new TextureObject("assets/timer/TimerFive.png");
-        texture_array[18] = new TextureObject("assets/timer/TimerSix.png");
-        texture_array[19] = new TextureObject("assets/timer/TimerSeven.png");
-        texture_array[20] = new TextureObject("assets/timer/TimerEight.png");
-        texture_array[21] = new TextureObject("assets/timer/TimerNine.png");
-        texture_array[22] = new TextureObject("assets/images/ResetButton.png");
-        texture_array[23] = new TextureObject("assets/images/CorrectFlag.png");
+        game_array = TextureLoader.loadGameTextures();
+        timer_array = TextureLoader.loadTimerTextures();
+
 
         initRectangle(2f,2f,670f, 58f); // UI background
 

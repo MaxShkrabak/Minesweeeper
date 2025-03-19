@@ -98,7 +98,7 @@ public class TileRenderer extends RenderEngine {
                     renderTile(row, col);
                 }
             }
-            renderUI();
+            renderHUD();
 
             my_wm.swapBuffers();
         }
@@ -190,98 +190,45 @@ public class TileRenderer extends RenderEngine {
         return insideButton && MouseListener.mouseButtonDown(0);
     }
 
-
-    private void renderUI() {
+    private void renderHUD() {
         long currentTime = gameTimer.getElapsedTime();
 
-        int hundreds = (int) (currentTime / 100);
-        int tens = (int) (currentTime / 10) % 10;
-        int ones = (int) (currentTime % 10);
+        int[] timeDigits = {
+                (int) (currentTime / 100),
+                (int) (currentTime / 10) % 10,
+                (int) (currentTime % 10)
+        };
 
-        int mineHundreds = (totalMines / 100);
-        int mineTens = (totalMines / 10) % 10;
-        int mineOnes = (totalMines % 10);
+        int[] mineDigits = {
+                totalMines / 100,
+                (totalMines / 10) % 10,
+                totalMines % 10
+        };
 
-        Vector4f rectangleColor = new Vector4f(0.26f, 0.29f, 0.32f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", rectangleColor);
+        renderRectangle(0, new Vector4f(0.26f, 0.29f, 0.32f, 1.0f)); // HUD background
 
-        glBindVertexArray(rectangleVaoIDs[0]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
-
-        // Ones timer rectangle
-        Vector4f OnesRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", OnesRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-
-        switchCounter(ones); // Updates ones counter
-
-        glBindVertexArray(rectangleVaoIDs[1]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
-        // Tenths timer counter
-        Vector4f TensRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", TensRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-
-        switchCounter(tens); // Updates tens counter
-
-        glBindVertexArray(rectangleVaoIDs[2]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
-        // Hundreds timer counter
-        Vector4f HundredsRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", HundredsRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-
-        switchCounter(hundreds); // Updates tens counter
-
-        glBindVertexArray(rectangleVaoIDs[3]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
-        // Hundreds Mine counter
-        Vector4f HMineRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", HMineRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-
-        switchCounter(mineHundreds);
-
-        glBindVertexArray(rectangleVaoIDs[4]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
-        // Tens Mine counter
-        Vector4f TMineRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", TMineRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-        switchCounter(mineTens);
-        glBindVertexArray(rectangleVaoIDs[5]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-
-        // Ones Mine counter
-        Vector4f OMineRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", OMineRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-        switchCounter(mineOnes);
-        glBindVertexArray(rectangleVaoIDs[6]);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
+        for (int i = 0; i < 3; i++) {
+            updateCounter(3 - i, timeDigits[i]); // Timer counter
+            updateCounter(i + 4, mineDigits[i]); // Mine counter
+        }
 
         // Reset button
-        Vector4f ResetRectangleColor = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
-        shaderObj0.loadVector4f("rectangleColor", ResetRectangleColor);
-        glUseProgram(shaderObj0.getProgID());
-
         game_array[12].bind_texture();
+        renderRectangle(7, new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+    }
 
-        glBindVertexArray(rectangleVaoIDs[7]);
+
+    private void renderRectangle(int index, Vector4f color) {
+        shaderObj0.loadVector4f("rectangleColor", color);
+        glBindVertexArray(rectangleVaoIDs[index]);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
+    }
+
+    private void updateCounter(int index, int value) {
+        glUseProgram(shaderObj0.getProgID());
+        switchCounter(value);
+        renderRectangle(index, new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
     }
 
     public void switchCounter(int value) {

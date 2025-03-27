@@ -104,7 +104,7 @@ public abstract class RenderEngine {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 float x = col * (tileSize + POLY_PADDING) + POLY_OFFSET;
-                float y = row * (tileSize + POLY_PADDING) + POLY_OFFSET + TOP_UI_HEIGHT;
+                float y = row * (tileSize + POLY_PADDING) + POLY_OFFSET + TOP_HUD_HEIGHT;
 
                 // Bottom left
                 vertices[index++] = x;

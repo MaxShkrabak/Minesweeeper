@@ -40,7 +40,7 @@ public class MineBoard {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 // Ensures initial tile and surrounding tiles are safe
-                if (Math.abs(row - sRow) <= 1 && Math.abs(col - sCol) <= 1) {
+                if (row == sRow && col == sCol) {
                     continue;
                 }
                 coordinates.add(new int[]{row,col});
